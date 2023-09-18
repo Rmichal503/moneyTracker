@@ -138,9 +138,10 @@ export default function () {
                     <NumberInput className='rounded-md' placeholder='Set a spending limit' enableStepper={false} onValueChange={(value) => {
                         setEditMaxValue(value)
                     }} />
-                <div className='flex justify-end'>
-                    <input className='w-8 h-8 p-0 border rounded-md inputColor' type='color' disabled value={selectedColor?.value} defaultValue='#3b82f6' />
-                    <select defaultValue='blue' className='outline-tremor-ring text-center' onChange={(e) => {
+                <div className='flex justify-between pl-3 py-2 items-center border-tremor-border dark:border-dark-tremor-border border rounded-md space-x-1'>
+                    <label className='text-tremor-content text-tremor-default' htmlFor="inputColor">Choose card color</label>
+                    <input className='w-8 h-8 p-0 border rounded-md inputColor' type='color' disabled value={selectedColor?.value} defaultValue='#3b82f6' name='inputColor'/>
+                    <select defaultValue='blue' className='outline-tremor-ring text-center bg-transparent text-tremor-content-emphasis dark:text-dark-tremor-content-emphasis' onChange={(e) => {
                         const colorValues = e.target.value.split(',')
                         setSelectedColor({
                             value: colorValues[0],

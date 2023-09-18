@@ -1,15 +1,14 @@
 import { ProgressBarColor } from '@/types/components'
 import { Database, Spend } from '@/types/supabase'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Card, Text, Metric, ProgressBar, Accordion, AccordionHeader, AccordionBody, NumberInput, Button, Flex } from '@tremor/react'
-import { Coins, PiggyBank, Settings, Trash } from 'lucide-react'
+import { Card, Text, Metric, ProgressBar, NumberInput, Button, Flex } from '@tremor/react'
+import { Coins, Settings } from 'lucide-react'
 import React, { useState } from 'react'
 import DeleteCard from './ExpensesButtons/DeleteCard'
 import MaxLimit from './ExpensesButtons/MaxLimit'
 
 const supabase = createClientComponentClient<Database>()
 
-// foriner table with expenses
 
 const percentageOfLeftMoney = (maxValue: number, minValue: number) => {
     if(maxValue === 0) return 0
@@ -21,6 +20,7 @@ const addCurrentValue = async (id: string, currentValue: number, value: number, 
     const { error } = await supabase.from('spends').update({ currentValue: (currentValue + value) }).eq('id', id)
     const { error: expensesError } = await supabase.from('expenses').insert({ value: value, title: title })
     if (error) console.error(error)
+    if (expensesError) console.error(expensesError)
     setTimeout(() => {
         location.reload()
     }, 400)
@@ -34,8 +34,8 @@ export default function SpendCard({ spend }: { spend: Spend }) {
     return (
         <Card decoration='top' decorationColor={color as ProgressBarColor} className='rounded-md drop-shadow-md space-y-2 p-4'>
             <Flex>
-                <Metric>{title}</Metric>
-                <Button variant='light' icon={Settings} onClick={(e)=>{
+                <Metric color={color as ProgressBarColor}>{title}</Metric>
+                <Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e)=>{
                     e.preventDefault()
                     setToogle(prev=>{return !prev})
                 }}></Button>
@@ -59,15 +59,8 @@ export default function SpendCard({ spend }: { spend: Spend }) {
                     addCurrentValue(id, currentValue, editCurrentValue, title)
                 }} ></Button>
             </div>
-            {/* <Accordion className='border-none w-full'>
-                <AccordionHeader className='text-left p-1'>Edit</AccordionHeader>
-                <AccordionBody className='space-y-1 p-0'>
-                    <MaxLimit color={color} placeholderText={'Set monthly spending limits'} id={id}/>
-                    <DeleteCard id={id}/>
-                </AccordionBody>
-            </Accordion> */}
             {toogle?<div className='flex flex-col space-y-1'>
-                <MaxLimit color={color} placeholderText={'Set monthly spending limits'} id={id}/>
+                <MaxLimit color={color} placeholderText={'Set new monthly spending limits'} id={id}/>
                 <DeleteCard id={id}/>
             </div>:null}
         </Card>
