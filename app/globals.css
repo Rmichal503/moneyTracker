@@ -2,7 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
+@layer components{
+  .inputColor{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 45px;
+    height: 45px;
+    background-color: transparent;
+    border: none;
+    cursor: none;
+  }
+  .inputColor::-webkit-color-swatch {
+    border-radius: 0.375rem;
+    border: 1px #e5e7eb solid;
+  }
+  .inputColor::-moz-color-swatch {
+    border-radius: 0.375rem;
+    border: 1px #e5e7eb solid;
+  }
+}
+.tremor-ProgressBar-progressBarWrapper{
+  height: 20px;
+}
+/* @layer base {
   :root {
     --background: 200 20% 98%;
     --btn-background: 200 10% 91%;
@@ -39,4 +62,4 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
+} */
