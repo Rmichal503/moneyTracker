@@ -6,7 +6,6 @@ import LogoutButton from './LogoutButton'
 export default function Navbar() {
   return (
     <div className='flex flex-col px-3 py-2 md:p-6 relative w-screen'>
-
     <div className='flex justify-end space-x-1'>
         <AddNewList/>
         <LogoutButton/>
