@@ -48,6 +48,7 @@ export interface Database {
           expenses: number | null
           id: string
           maxValue: number
+          shared_with: string | null
           title: string | null
           user_id: string | null
         }
@@ -58,6 +59,7 @@ export interface Database {
           expenses?: number | null
           id?: string
           maxValue?: number
+          shared_with?: string | null
           title?: string | null
           user_id?: string | null
         }
@@ -68,6 +70,7 @@ export interface Database {
           expenses?: number | null
           id?: string
           maxValue?: number
+          shared_with?: string | null
           title?: string | null
           user_id?: string | null
         }
