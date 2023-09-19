@@ -17,6 +17,7 @@ const percentageOfLeftMoney = (maxValue: number, minValue: number) => {
 
 
 const addCurrentValue = async (id: string, currentValue: number, value: number, title: string | null) => {
+    if(Math.sign(value)=== -1) return alert('The expense must be entered as a positive number')
     const { error } = await supabase.from('spends').update({ currentValue: (currentValue + value) }).eq('id', id)
     const { error: expensesError } = await supabase.from('expenses').insert({ value: value, title: title })
     if (error) console.error(error)

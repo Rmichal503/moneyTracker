@@ -2,8 +2,6 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import React, { useEffect, useState } from 'react'
 import { Database, Spend } from '../../types/supabase'
-import { Card, Metric, Text, ProgressBar, Button, Accordion, AccordionBody, AccordionHeader, NumberInput } from "@tremor/react";
-import AddNewList from '@/components/AddNewList';
 import SpendCard from '@/components/SpendCard';
 import Navbar from '@/components/Navbar';
 

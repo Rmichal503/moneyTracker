@@ -14,7 +14,6 @@ const addNewList = async (title: string | undefined, color: string, maxValue:num
             title: title,
             color: color,
             maxValue: maxValue,
-            currentValue: maxValue
         })
     } catch (error) {
 
