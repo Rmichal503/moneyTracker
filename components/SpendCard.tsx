@@ -24,22 +24,23 @@ const addCurrentValue = async (id: string, currentValue: number, value: number, 
     if (expensesError) console.error(expensesError)
     setTimeout(() => {
         location.reload()
-    }, 400)
+    }, 600)
 }
 
 
 export default function SpendCard({ spend }: { spend: Spend }) {
     const [editCurrentValue, setEditCurrentValue] = useState(0)
     const [toogle,setToogle] = useState(false)
-    const { id, maxValue, currentValue, title, color } = spend
+    const { id, maxValue, currentValue, title, color, shared_with } = spend
+    
     return (
-        <Card decoration='top' decorationColor={color as ProgressBarColor} className='rounded-md drop-shadow-md space-y-2 p-4'>
+        <Card decoration='top' decorationColor={color as ProgressBarColor} className='rounded-md drop-shadow-md space-y-2 p-4 h-fit'>
             <Flex>
                 <Metric color={color as ProgressBarColor}>{title}</Metric>
-                <Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e)=>{
+                {shared_with === null ? (<Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e)=>{
                     e.preventDefault()
                     setToogle(prev=>{return !prev})
-                }}></Button>
+                }}></Button>): null}
             </Flex>
             <div>
                 <Flex>
@@ -50,10 +51,10 @@ export default function SpendCard({ spend }: { spend: Spend }) {
                         <Text>{maxValue-currentValue} &bull; </Text> <Text color={color as ProgressBarColor}> {maxValue}</Text>
                     </span>
                 </Flex>
-                <ProgressBar color={color as ProgressBarColor} showAnimation={true} value={percentageOfLeftMoney(maxValue, currentValue)} />
+                <ProgressBar className='rounded' color={color as ProgressBarColor} showAnimation={true} value={percentageOfLeftMoney(maxValue, currentValue)} />
             </div>
             <div className='flex space-x-1'>
-                <NumberInput className='rounded-md' placeholder='Add expense' enableStepper={false} onValueChange={(value) => { setEditCurrentValue(value) }} />
+                <NumberInput className='rounded-md' placeholder='Add expense' enableStepper={false} onValueChange={(value) => { setEditCurrentValue((Math.round(value*100)/100))}} />
                 <Button color={color as ProgressBarColor} className='rounded-md' icon={Coins} variant='secondary' onClick={(e) => {
                     e.preventDefault()
                     if ((currentValue + editCurrentValue) > maxValue) { return alert('Over budget!') }

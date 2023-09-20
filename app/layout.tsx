@@ -13,7 +13,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className='bg-tremor-background dark:bg-dark-tremor-background'>
-        <main className="min-h-screen flex flex-col items-center px-3 pb-3 md:px-6 md:pb-6">
+        <main className="min-h-screen md:h-screen flex flex-col items-center px-3 pb-3 md:px-6 md:pb-6">
           {children}
         </main>
       </body>
