@@ -8,13 +8,14 @@ import SelectColorInput from './SelectColorInput'
 
 const supabase = createClientComponentClient<Database>()
 
-const addNewList = async (title: string | undefined, color: string, maxValue:number) => {
+const addNewList = async (title: string | undefined, color: string, maxValue: number, emailToShareWith: string|null) => {
     if (title === undefined) return
     try {
         await supabase.from('spends').insert({
             title: title,
             color: color,
             maxValue: maxValue,
+            shared_with: emailToShareWith
         })
         setTimeout(() => {
             location.reload()
@@ -30,35 +31,49 @@ interface ColorSelect {
 }
 
 export default function () {
-    const [toogle, setToogle] = useState(false)
+    const [toogleAdd, setToogleAdd] = useState(false)
     const [listName, setListName] = useState<string>()
     const [selectedColor, setSelectedColor] = useState<ColorSelect>()
     const [editMaxValue, setEditMaxValue] = useState(0)
+    const [emailToShareWith, setEmailToShareWith] = useState<string|null>(null)
+    const [toogleShareEmailInput, setToogleShareEmailInput] = useState(false)
     return (
         <div className='h-fit space-y-1'>
             <Button size='xs' className='rounded-md' variant='primary' onClick={() => {
-                setToogle(prev => { return !prev })
+                setToogleAdd(prev => { return !prev })
             }}>
                 Add new list
             </Button>
-            {toogle ? <Card className='absolute z-10 flex flex-col right-2 space-y-2 w-3/4 rounded-md drop-shadow-md p-3'>
-                    <TextInput placeholder='New list name' className='rounded-md' onChange={(e) => {
-                        e.preventDefault()
-                        setListName(e.target.value)
-                    }} />
-                    <NumberInput className='rounded-md' placeholder='Set a spending limit' enableStepper={false} onValueChange={(value) => {
-                        setEditMaxValue(value)
-                    }} />
+            {toogleAdd ? <Card className='absolute z-10 flex flex-col right-2 space-y-2 w-3/4 rounded-md drop-shadow-md p-3'>
+                <TextInput placeholder='New list name' className='rounded-md' onChange={(e) => {
+                    e.preventDefault()
+                    setListName(e.target.value)
+                }} />
+                <NumberInput className='rounded-md' placeholder='Set a spending limit' enableStepper={false} onValueChange={(value) => {
+                    setEditMaxValue(value)
+                }} />
                 <div className='flex justify-between pl-3 py-2 items-center border-tremor-border dark:border-dark-tremor-border border rounded-md space-x-1'>
                     <label className='text-tremor-content text-tremor-default' htmlFor="inputColor">Choose card color</label>
-                    <input className='w-8 h-8 p-0 border rounded-md inputColor' type='color' disabled value={selectedColor?.value} defaultValue='#3b82f6' name='inputColor'/>
-                    <SelectColorInput setSelectedColor={setSelectedColor}/>
+                    <input className='w-8 h-8 p-0 border rounded-md inputColor' type='color' disabled value={selectedColor?.value} defaultValue='#3b82f6' name='inputColor' />
+                    <SelectColorInput setSelectedColor={setSelectedColor} />
                 </div>
+                <div className="flex justify-end px-3 py-2 items-center rounded-md space-x-1">
+                    <input type='checkbox' name='share' onChange={()=>{
+                            setToogleShareEmailInput(prev=>{return !prev})
+                        }}/>
+                    <label className='text-tremor-content text-tremor-default' htmlFor="share">Shared card?</label>
+                </div>
+                {toogleShareEmailInput?(
+                        <TextInput placeholder='Email of user you want to share' className='rounded-md' onChange={(e) => {
+                            e.preventDefault()
+                            setEmailToShareWith(e.target.value)
+                        }} />
+                    ):null}
                 <Button icon={PlusCircle} className='rounded-lg p-2' onClick={() => {
-                        setToogle(prev => { return !prev })
-                        if (selectedColor === undefined) return alert('Choose color')
-                        addNewList(listName, selectedColor.title,editMaxValue)
-                    }}>Add list</Button>
+                    if (selectedColor === undefined) return alert('Choose color')
+                    setToogleAdd(prev => { return !prev })
+                    addNewList(listName, selectedColor.title, editMaxValue, emailToShareWith)
+                }}>Add list</Button>
             </Card> : null}
         </div>
     )

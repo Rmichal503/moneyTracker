@@ -7,7 +7,7 @@ import Navbar from '@/components/Navbar';
 
 const supabase = createClientComponentClient<Database>()
 const fetchData = async () => {
-    const { data, error } = await supabase.from('spends').select('id,title,maxValue,currentValue,color')
+    const { data, error } = await supabase.from('spends').select('id,title,maxValue,currentValue,color,shared_with').order('created_at',{ascending:true})
     if (error) {
         console.error(error)
         return

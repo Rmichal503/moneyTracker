@@ -31,15 +31,16 @@ const addCurrentValue = async (id: string, currentValue: number, value: number, 
 export default function SpendCard({ spend }: { spend: Spend }) {
     const [editCurrentValue, setEditCurrentValue] = useState(0)
     const [toogle,setToogle] = useState(false)
-    const { id, maxValue, currentValue, title, color } = spend
+    const { id, maxValue, currentValue, title, color, shared_with } = spend
+    
     return (
         <Card decoration='top' decorationColor={color as ProgressBarColor} className='rounded-md drop-shadow-md space-y-2 p-4'>
             <Flex>
                 <Metric color={color as ProgressBarColor}>{title}</Metric>
-                <Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e)=>{
+                {shared_with === null ? (<Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e)=>{
                     e.preventDefault()
                     setToogle(prev=>{return !prev})
-                }}></Button>
+                }}></Button>): null}
             </Flex>
             <div>
                 <Flex>

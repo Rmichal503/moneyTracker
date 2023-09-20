@@ -115,4 +115,5 @@ export interface Spend{
     title: string | null
     id: string
     color: string
+    shared_with?: string | null
 }
