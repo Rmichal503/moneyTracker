@@ -39,12 +39,12 @@ export default function () {
     const [toogleShareEmailInput, setToogleShareEmailInput] = useState(false)
     return (
         <div className='h-fit space-y-1'>
-            <Button size='xs' className='rounded-md' variant='primary' onClick={() => {
+            <Button size='xs' className='rounded-md xs:px-2.5 xs:py-1.5 px-1.5 py-1' variant='primary' onClick={() => {
                 setToogleAdd(prev => { return !prev })
             }}>
-                Add new list
+                New list
             </Button>
-            {toogleAdd ? <Card className='absolute z-10 flex flex-col right-2 space-y-2 w-3/4 rounded-md drop-shadow-md p-3'>
+            {toogleAdd ? <Card className='absolute z-10 flex flex-col right-2 space-y-2 w-3/4 md:md:w-1/3 rounded-md drop-shadow-md p-3'>
                 <TextInput placeholder='New list name' className='rounded-md' onChange={(e) => {
                     e.preventDefault()
                     setListName(e.target.value)
@@ -52,7 +52,7 @@ export default function () {
                 <NumberInput className='rounded-md' placeholder='Set a spending limit' enableStepper={false} onValueChange={(value) => {
                     setEditMaxValue(value)
                 }} />
-                <div className='flex justify-between pl-3 py-2 items-center border-tremor-border dark:border-dark-tremor-border border rounded-md space-x-1'>
+                <div className='flex justify-between md:justify-end px-3 py-2 items-center border-tremor-border dark:border-dark-tremor-border border rounded-md space-x-1'>
                     <label className='text-tremor-content text-tremor-default' htmlFor="inputColor">Choose card color</label>
                     <input className='w-8 h-8 p-0 border rounded-md inputColor' type='color' disabled value={selectedColor?.value} defaultValue='#3b82f6' name='inputColor' />
                     <SelectColorInput setSelectedColor={setSelectedColor} />

@@ -1,7 +1,9 @@
 
+import LinkButton from '@/components/LinkButton'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Metric, Text } from '@tremor/react'
 import { cookies } from 'next/headers'
+import Link from 'next/link'
 import LogoutButton from '../components/LogoutButton'
 import Login from './login/page'
 
@@ -15,13 +17,13 @@ export default async function Index() {
   } = await supabase.auth.getUser()
   return (
     <div className="w-full flex flex-col items-center ">
-      
           <>
             {user ? (
               <nav className="w-full flex justify-center border-b border-b-tremor-background-subtle dark:border-b-dark-tremor-background-subtle">
-              <div className="w-full flex justify-between items-center px-3 py-2 md:p-6 text-sm">
-              <div className="flex items-center w-full justify-between">
+              <div className="w-full flex justify-between items-center px-3 py-2 md:px-6 md:py-4 text-sm">
+              <div className="flex items-center w-full justify-end space-x-3">
                 <span className="text-tremor-content dark:text-dark-tremor-content">Hey, {user.email}!</span>
+                <LinkButton href='/spends' text='Spends'/>
                 <LogoutButton />
               </div>
               </div>

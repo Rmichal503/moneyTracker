@@ -47,5 +47,7 @@
 .tremor-ProgressBar-progressBarWrapper{
   height: 20px;
 }
-
+.tremor-ProgressBar-progressBar{
+  border-radius: 0.5rem;
+}
 
