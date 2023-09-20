@@ -8,14 +8,15 @@ import SelectColorInput from './SelectColorInput'
 
 const supabase = createClientComponentClient<Database>()
 
-const addNewList = async (title: string | undefined, color: string, maxValue: number, emailToShareWith: string|null) => {
+const addNewList = async (title: string | undefined, color: string, maxValue: number, emailToShareWith: string | null, shareEdit: boolean) => {
     if (title === undefined) return
     try {
         await supabase.from('spends').insert({
             title: title,
             color: color,
             maxValue: maxValue,
-            shared_with: emailToShareWith
+            shared_with: emailToShareWith,
+            share_edit: shareEdit
         })
         setTimeout(() => {
             location.reload()
@@ -35,8 +36,9 @@ export default function () {
     const [listName, setListName] = useState<string>()
     const [selectedColor, setSelectedColor] = useState<ColorSelect>()
     const [editMaxValue, setEditMaxValue] = useState(0)
-    const [emailToShareWith, setEmailToShareWith] = useState<string|null>(null)
+    const [emailToShareWith, setEmailToShareWith] = useState<string | null>(null)
     const [toogleShareEmailInput, setToogleShareEmailInput] = useState(false)
+    const [shareEdit, setShareEdit] = useState(false)
     return (
         <div className='h-fit space-y-1'>
             <Button size='xs' className='rounded-md xs:px-2.5 xs:py-1.5 px-1.5 py-1' variant='primary' onClick={() => {
@@ -58,21 +60,29 @@ export default function () {
                     <SelectColorInput setSelectedColor={setSelectedColor} />
                 </div>
                 <div className="flex justify-end px-3 py-2 items-center rounded-md space-x-1">
-                    <input type='checkbox' name='share' onChange={()=>{
-                            setToogleShareEmailInput(prev=>{return !prev})
-                        }}/>
+                    <input type='checkbox' name='share' onChange={() => {
+                        setToogleShareEmailInput(prev => { return !prev })
+                    }} />
                     <label className='text-tremor-content text-tremor-default' htmlFor="share">Shared card?</label>
                 </div>
-                {toogleShareEmailInput?(
+                {toogleShareEmailInput ? (
+                    <>
                         <TextInput placeholder='Email of user you want to share' className='rounded-md' onChange={(e) => {
                             e.preventDefault()
                             setEmailToShareWith(e.target.value)
                         }} />
-                    ):null}
+                        <div className="flex justify-end px-3 py-2 items-center rounded-md space-x-1">
+                            <label className='text-tremor-content text-tremor-default' htmlFor="shareEdit">Allow user to edit this card?</label>
+                            <input type='checkbox' name='shareEdit' onChange={() => {
+                                setShareEdit(prev=>{return !prev})
+                            }} />
+                        </div>
+                    </>
+                ) : null}
                 <Button icon={PlusCircle} className='rounded-lg p-2' onClick={() => {
                     if (selectedColor === undefined) return alert('Choose color')
                     setToogleAdd(prev => { return !prev })
-                    addNewList(listName, selectedColor.title, editMaxValue, emailToShareWith)
+                    addNewList(listName, selectedColor.title, editMaxValue, emailToShareWith, shareEdit)
                 }}>Add list</Button>
             </Card> : null}
         </div>
