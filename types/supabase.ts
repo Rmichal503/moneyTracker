@@ -48,6 +48,7 @@ export interface Database {
           expenses: number | null
           id: string
           maxValue: number
+          share_edit: boolean
           shared_with: string | null
           title: string | null
           user_id: string | null
@@ -59,6 +60,7 @@ export interface Database {
           expenses?: number | null
           id?: string
           maxValue?: number
+          share_edit?: boolean
           shared_with?: string | null
           title?: string | null
           user_id?: string | null
@@ -70,6 +72,7 @@ export interface Database {
           expenses?: number | null
           id?: string
           maxValue?: number
+          share_edit?: boolean
           shared_with?: string | null
           title?: string | null
           user_id?: string | null
@@ -109,6 +112,7 @@ export interface Database {
 
 
 
+
 export interface Spend{
     currentValue: number
     maxValue: number
@@ -116,4 +120,6 @@ export interface Spend{
     id: string
     color: string
     shared_with?: string | null
+    share_edit?:boolean
+    user_id:string | null
 }
