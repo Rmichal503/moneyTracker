@@ -69,7 +69,7 @@ export default function () {
                     <>
                         <TextInput placeholder='Email of user you want to share' className='rounded-md' onChange={(e) => {
                             e.preventDefault()
-                            setEmailToShareWith(e.target.value)
+                            setEmailToShareWith(e.target.value.trim().toLowerCase())
                         }} />
                         <div className="flex justify-end px-3 py-2 items-center rounded-md space-x-1">
                             <label className='text-tremor-content text-tremor-default' htmlFor="shareEdit">Allow user to edit this card?</label>
