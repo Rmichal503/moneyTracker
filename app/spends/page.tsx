@@ -35,7 +35,7 @@ export default function page() {
         <>
             <Navbar />
             {((spends === undefined) && (loading)) ? <Loader className='animate-spin my-auto' size={200} /> : (
-                    <div className='w-full h-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 place-content-center md:place-content-evenly gap-1 md:gap-4 md:space-y-0'>
+                    <div className='w-full h-fit grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 place-content-center md:place-content-evenly gap-1 md:gap-4 md:space-y-0'>
                         {spends !== undefined ? (<>
                             {spends.map((el) => {
                                 return (<SpendCard ownerId={ownerId} spend={el} key={el.id} />)
