@@ -41,8 +41,8 @@ export default function Login() {
               Sign Up
             </button>
           </div>
-          <Messages />
         </form>
+          <Messages />
       </Card>
     </div>
   )
