@@ -13,6 +13,7 @@ export interface Database {
         Row: {
           created_at: string
           id: number
+          label: string | null
           title: string | null
           user_id: string | null
           value: number
@@ -20,6 +21,7 @@ export interface Database {
         Insert: {
           created_at?: string
           id?: number
+          label?: string | null
           title?: string | null
           user_id?: string | null
           value?: number
@@ -27,6 +29,7 @@ export interface Database {
         Update: {
           created_at?: string
           id?: number
+          label?: string | null
           title?: string | null
           user_id?: string | null
           value?: number
@@ -113,13 +116,18 @@ export interface Database {
 
 
 
-export interface Spend{
-    currentValue: number
-    maxValue: number
-    title: string | null
-    id: string
-    color: string
-    shared_with?: string | null
-    share_edit?:boolean
-    user_id:string | null
+export interface Spend {
+  currentValue: number
+  maxValue: number
+  title: string | null
+  id: string
+  color: string
+  shared_with?: string | null
+  share_edit?: boolean
+  user_id: string | null
+}
+export interface Expenses {
+  created_at?: string
+  label?: string | null
+  value?: number
 }
