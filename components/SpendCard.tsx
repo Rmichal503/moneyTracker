@@ -44,9 +44,9 @@ export default function SpendCard({ spend, ownerId }: { spend: Spend, ownerId: s
 
     const fetchExpenses = async (title: string) => {
         const { error, data } = await supabase.from('expenses').select('created_at,value,label').eq('title', title)
+        console.log(error);
         if (data !== null) {
             setExpenses(data)
-            console.log(data);
         }
     }
     return (
@@ -98,7 +98,7 @@ export default function SpendCard({ spend, ownerId }: { spend: Spend, ownerId: s
             </div>) : null)}
             {toogle ? <div className='flex flex-col space-y-1'>
                 <MaxLimit color={color} placeholderText={'Set new monthly spending limits'} id={id} />
-                <EditTitle color={color} id={id} title={title!}/>
+                <EditTitle color={color} id={id} title={title!} />
                 <DeleteCard id={id} title={title!} />
             </div> : null}
             <div className='flex justify-center' onClick={() => {
