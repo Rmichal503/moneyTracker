@@ -1,7 +1,7 @@
 import { ProgressBarColor } from '@/types/components'
 import { Database } from '@/types/supabase'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Button, NumberInput } from '@tremor/react'
+import { Button, Divider, NumberInput } from '@tremor/react'
 import { PiggyBank } from 'lucide-react'
 import React, { useState } from 'react'
 
@@ -25,7 +25,9 @@ interface MaxLimitButtonProps{
 export default function MaxLimit({color,id,placeholderText}:MaxLimitButtonProps) {
     const [editMaxValue, setEditMaxValue] = useState(0)
     return (
-        <div className='flex space-x-1'>
+        <>
+        <Divider className='my-1'/>
+        <div className='flex space-x-2'>
             <NumberInput className='rounded-md' placeholder={placeholderText} enableStepper={false} onValueChange={(value) => {
                 setEditMaxValue(value)
             }} />
@@ -34,5 +36,6 @@ export default function MaxLimit({color,id,placeholderText}:MaxLimitButtonProps)
                 addMaxValue(id, editMaxValue)
             }}></Button>
         </div>
+        </>
     )
 }

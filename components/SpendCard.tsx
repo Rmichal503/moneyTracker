@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 import { Table, TableHead, TableHeaderCell, TableBody, TableRow, TableCell } from "@tremor/react";
 import DeleteCard from './ExpensesButtons/DeleteCard'
 import MaxLimit from './ExpensesButtons/MaxLimit'
+import EditTitle from './ExpensesButtons/EditTitle'
 
 const supabase = createClientComponentClient<Database>()
 
@@ -52,7 +53,7 @@ export default function SpendCard({ spend, ownerId }: { spend: Spend, ownerId: s
         <Card decoration='top' decorationColor={color as ProgressBarColor} className='rounded-md drop-shadow-md space-y-2 p-4 h-fit'>
             <Flex>
                 <Metric color={color as ProgressBarColor}>{title}</Metric>
-                {(shared_with === null || shared_with === '') ? (<Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e) => {
+                {(ownerId === user_id) ? (<Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e) => {
                     e.preventDefault()
                     setToogle(prev => { return !prev })
                 }}></Button>) : (<Text className='flex space-x-1 items-center' color={color as ProgressBarColor}><Users size={16} />Shared</Text>)}
@@ -97,7 +98,8 @@ export default function SpendCard({ spend, ownerId }: { spend: Spend, ownerId: s
             </div>) : null)}
             {toogle ? <div className='flex flex-col space-y-1'>
                 <MaxLimit color={color} placeholderText={'Set new monthly spending limits'} id={id} />
-                <DeleteCard id={id} />
+                <EditTitle color={color} id={id} title={title!}/>
+                <DeleteCard id={id} title={title!} />
             </div> : null}
             <div className='flex justify-center' onClick={() => {
                 if (expenses === undefined) {
@@ -108,31 +110,31 @@ export default function SpendCard({ spend, ownerId }: { spend: Spend, ownerId: s
                 <Text color={color as ProgressBarColor} className='flex hover:text-tremor-content-emphasis hover:cursor-pointer transition-colors duration-200'>Expenses over time <ChevronDown /></Text>
             </div>
             {(toogleExpenses) ?
-                (expenses !== undefined)?
-                (<Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableHeaderCell>Date</TableHeaderCell>
-                            <TableHeaderCell>Label</TableHeaderCell>
-                            <TableHeaderCell>Value</TableHeaderCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {expenses?.map((el) => (
-                            <TableRow key={el.created_at}>
-                                <TableCell>{dayjs(el.created_at).format('DD/MM HH:mm:ss')}</TableCell>
-                                <TableCell>
-                                    <Text>{el.label}</Text>
-                                </TableCell>
-                                <TableCell>
-                                    <Text color={color as ProgressBarColor}>{el.value}</Text>
-                                </TableCell>
+                (expenses !== undefined) ?
+                    (<Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableHeaderCell>Date</TableHeaderCell>
+                                <TableHeaderCell>Label</TableHeaderCell>
+                                <TableHeaderCell>Value</TableHeaderCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>) : <Text color={color as ProgressBarColor} className="flex justify-center">
-                    <Loader className='animate-spin' size={32} />
-                </Text> : null
+                        </TableHead>
+                        <TableBody>
+                            {expenses?.map((el) => (
+                                <TableRow key={el.created_at}>
+                                    <TableCell>{dayjs(el.created_at).format('DD/MM HH:mm:ss')}</TableCell>
+                                    <TableCell>
+                                        <Text>{el.label}</Text>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Text color={color as ProgressBarColor}>{el.value}</Text>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>) : <Text color={color as ProgressBarColor} className="flex justify-center">
+                        <Loader className='animate-spin' size={32} />
+                    </Text> : null
             }
         </Card>
     )
