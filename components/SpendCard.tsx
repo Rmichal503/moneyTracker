@@ -1,7 +1,7 @@
 import { ProgressBarColor } from '@/types/components'
 import { Database, Expenses, Spend } from '@/types/supabase'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Card, Text, Metric, ProgressBar, NumberInput, Button, Flex, TextInput } from '@tremor/react'
+import { Card, Text, Metric, ProgressBar, NumberInput, Button, Flex, TextInput, Badge } from '@tremor/react'
 import dayjs from 'dayjs'
 import { ChevronDown, Coins, Loader, Settings, Users } from 'lucide-react'
 import React, { useState } from 'react'
@@ -55,10 +55,10 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
         <Card decoration='top' decorationColor={color as ProgressBarColor} className='self-start rounded-md drop-shadow-md space-y-2 p-4 h-fit'>
             <Flex>
                 <Metric color={color as ProgressBarColor}>{title}</Metric>
-                {(ownerId === user_id) ? (<div className='flex space-x-1'>{(shared_with !== null || shared_with !== '') ? <Text className='flex space-x-1 items-center' color={color as ProgressBarColor}><Users size={16} />Shared</Text> : null}<Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e) => {
+                {(ownerId === user_id) ? (<div className='flex space-x-1'>{(shared_with !== null || shared_with !== '') ? <Badge icon={Users} color={color as ProgressBarColor}>Shared</Badge> : null}<Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e) => {
                     e.preventDefault()
                     setToogle(prev => { return !prev })
-                }}></Button></div>) : (<Text className='flex space-x-1 items-center' color={color as ProgressBarColor}><Users size={16} />Shared</Text>)}
+                }}></Button></div>) : (<Badge icon={Users} color={color as ProgressBarColor}>Shared</Badge>)}
             </Flex>
             <div>
                 <Flex>
