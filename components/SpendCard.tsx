@@ -9,6 +9,7 @@ import { Table, TableHead, TableHeaderCell, TableBody, TableRow, TableCell } fro
 import DeleteCard from './ExpensesButtons/DeleteCard'
 import MaxLimit from './ExpensesButtons/MaxLimit'
 import EditTitle from './ExpensesButtons/EditTitle'
+import { Owner } from '@/app/spends/page'
 
 const supabase = createClientComponentClient<Database>()
 
@@ -19,10 +20,10 @@ const percentageOfLeftMoney = (maxValue: number, minValue: number) => {
 }
 
 
-const addCurrentValue = async (id: string, currentValue: number, value: number, title: string | null, expenseLabel: string | null) => {
+const addCurrentValue = async (id: string, currentValue: number, value: number, title: string | null, expenseLabel: string | null, creator: string) => {
     if (Math.sign(value) === -1) return alert('The expense must be entered as a positive number')
     const { error } = await supabase.from('spends').update({ currentValue: (currentValue + value) }).eq('id', id)
-    const { error: expensesError } = await supabase.from('expenses').insert({ value: value, title: title, label: expenseLabel })
+    const { error: expensesError } = await supabase.from('expenses').insert({ value: value, title: title, label: expenseLabel, creator: creator })
     if (error) console.error(error)
     if (expensesError) console.error(expensesError)
     setTimeout(() => {
@@ -33,7 +34,7 @@ const addCurrentValue = async (id: string, currentValue: number, value: number, 
 
 
 
-export default function SpendCard({ spend, ownerId }: { spend: Spend, ownerId: string | undefined }) {
+export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner }) {
     const [editCurrentValue, setEditCurrentValue] = useState(0)
     const [expenseLabel, setExpenseLabel] = useState<string>()
     const [toogle, setToogle] = useState(false)
@@ -41,22 +42,23 @@ export default function SpendCard({ spend, ownerId }: { spend: Spend, ownerId: s
     const [toogleExpenses, setToogleExpenses] = useState(false)
 
     const { id, maxValue, currentValue, title, color, shared_with, share_edit, user_id } = spend
-
+    const { email, id: ownerId } = owner
     const fetchExpenses = async (title: string) => {
-        const { error, data } = await supabase.from('expenses').select('created_at,value,label').eq('title', title)
+        const { error, data } = await supabase.from('expenses').select('created_at,value,label,creator').eq('title', title)
         console.log(error);
         if (data !== null) {
             setExpenses(data)
         }
     }
+
     return (
-        <Card decoration='top' decorationColor={color as ProgressBarColor} className='rounded-md drop-shadow-md space-y-2 p-4 h-fit'>
+        <Card decoration='top' decorationColor={color as ProgressBarColor} className='self-start rounded-md drop-shadow-md space-y-2 p-4 h-fit'>
             <Flex>
                 <Metric color={color as ProgressBarColor}>{title}</Metric>
-                {(ownerId === user_id) ? (<Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e) => {
+                {(ownerId === user_id) ? (<div className='flex space-x-1'>{(shared_with !== null || shared_with !== '') ? <Text className='flex space-x-1 items-center' color={color as ProgressBarColor}><Users size={16} />Shared</Text> : null}<Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e) => {
                     e.preventDefault()
                     setToogle(prev => { return !prev })
-                }}></Button>) : (<Text className='flex space-x-1 items-center' color={color as ProgressBarColor}><Users size={16} />Shared</Text>)}
+                }}></Button></div>) : (<Text className='flex space-x-1 items-center' color={color as ProgressBarColor}><Users size={16} />Shared</Text>)}
             </Flex>
             <div>
                 <Flex>
@@ -80,7 +82,7 @@ export default function SpendCard({ spend, ownerId }: { spend: Spend, ownerId: s
                 <Button color={color as ProgressBarColor} className='rounded-md aspect-square' icon={Coins} variant='secondary' onClick={(e) => {
                     e.preventDefault()
                     if ((currentValue + editCurrentValue) > maxValue) { return alert('Over budget!') }
-                    addCurrentValue(id, currentValue, editCurrentValue, title, (expenseLabel === undefined ? null : expenseLabel))
+                    addCurrentValue(id, currentValue, editCurrentValue, title, (expenseLabel === undefined ? null : expenseLabel), (email === undefined ? 'no data' : email))
                 }} ></Button>
             </div>) : ((share_edit && (shared_with !== null || shared_with !== '')) ? (<div className='flex space-x-2 items-center'>
                 <div className="flex flex-col space-y-1 w-full">
@@ -93,7 +95,7 @@ export default function SpendCard({ spend, ownerId }: { spend: Spend, ownerId: s
                 <Button color={color as ProgressBarColor} className='rounded-md aspect-square' icon={Coins} variant='secondary' onClick={(e) => {
                     e.preventDefault()
                     if ((currentValue + editCurrentValue) > maxValue) { return alert('Over budget!') }
-                    addCurrentValue(id, currentValue, editCurrentValue, title, (expenseLabel === undefined ? null : expenseLabel))
+                    addCurrentValue(id, currentValue, editCurrentValue, title, (expenseLabel === undefined ? null : expenseLabel), (email === undefined ? 'no data' : email))
                 }} ></Button>
             </div>) : null)}
             {toogle ? <div className='flex flex-col space-y-1'>
@@ -117,11 +119,14 @@ export default function SpendCard({ spend, ownerId }: { spend: Spend, ownerId: s
                                 <TableHeaderCell>Date</TableHeaderCell>
                                 <TableHeaderCell>Label</TableHeaderCell>
                                 <TableHeaderCell>Value</TableHeaderCell>
+                                <TableHeaderCell>User</TableHeaderCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {expenses?.map((el) => (
-                                <TableRow key={el.created_at}>
+                            {expenses?.map((el) => {
+                                const user = el.creator.split('@').at(0)
+                                const upperCaseTitle = user!.charAt(0).toUpperCase() + user!.slice(1)
+                                return (<TableRow key={el.created_at}>
                                     <TableCell>{dayjs(el.created_at).format('DD/MM HH:mm:ss')}</TableCell>
                                     <TableCell>
                                         <Text>{el.label}</Text>
@@ -129,8 +134,12 @@ export default function SpendCard({ spend, ownerId }: { spend: Spend, ownerId: s
                                     <TableCell>
                                         <Text color={color as ProgressBarColor}>{el.value}</Text>
                                     </TableCell>
+                                    <TableCell>
+                                        <Text>{upperCaseTitle}</Text>
+                                    </TableCell>
                                 </TableRow>
-                            ))}
+                                )
+                            })}
                         </TableBody>
                     </Table>) : <Text color={color as ProgressBarColor} className="flex justify-center">
                         <Loader className='animate-spin' size={32} />

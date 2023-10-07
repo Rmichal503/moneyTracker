@@ -12,6 +12,8 @@ export interface Database {
       expenses: {
         Row: {
           created_at: string
+          creator: string
+          email: string | null
           id: number
           label: string | null
           title: string | null
@@ -20,14 +22,18 @@ export interface Database {
         }
         Insert: {
           created_at?: string
+          creator?: string
+          email?: string | null
           id?: number
           label?: string | null
           title?: string | null
           user_id?: string | null
-          value?: number
+          value: number
         }
         Update: {
           created_at?: string
+          creator?: string
+          email?: string | null
           id?: number
           label?: string | null
           title?: string | null
@@ -48,7 +54,6 @@ export interface Database {
           color: string
           created_at: string
           currentValue: number
-          expenses: number | null
           id: string
           maxValue: number
           share_edit: boolean
@@ -60,7 +65,6 @@ export interface Database {
           color?: string
           created_at?: string
           currentValue?: number
-          expenses?: number | null
           id?: string
           maxValue?: number
           share_edit?: boolean
@@ -72,7 +76,6 @@ export interface Database {
           color?: string
           created_at?: string
           currentValue?: number
-          expenses?: number | null
           id?: string
           maxValue?: number
           share_edit?: boolean
@@ -81,12 +84,6 @@ export interface Database {
           user_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "spends_expenses_fkey"
-            columns: ["expenses"]
-            referencedRelation: "expenses"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "spends_user_id_fkey"
             columns: ["user_id"]
@@ -130,4 +127,5 @@ export interface Expenses {
   created_at?: string
   label?: string | null
   value?: number
+  creator: string
 }

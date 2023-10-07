@@ -16,16 +16,24 @@ const fetchData = async () => {
     return data
 }
 
+export interface Owner {
+    email: string | undefined
+    id: string | undefined
+}
 
 export default function page() {
     const [spends, setSpends] = useState<Spend[]>()
-    const [ownerId, setOwnerID] = useState<string>()
+    const [owner, setOwner] = useState<Owner>()
     const [loading, setLoading] = useState(true)
     useEffect(() => {
         const fetchSpends = async () => {
             const spends = await fetchData()
             const {data} = await supabase.auth.getSession()
-            setOwnerID(data.session?.user.id)
+            setOwner({
+                email:data.session?.user.email,
+                id:data.session?.user.id
+            })
+            console.log(data.session?.user);
             setSpends(spends)
         }
         fetchSpends()
@@ -38,7 +46,7 @@ export default function page() {
                     <div className='w-full h-fit grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 place-content-center md:place-content-evenly gap-1 md:gap-4 md:space-y-0'>
                         {spends !== undefined ? (<>
                             {spends.map((el) => {
-                                return (<SpendCard ownerId={ownerId} spend={el} key={el.id} />)
+                                return (<SpendCard owner={owner!} spend={el} key={el.id} />)
                             })}
                         </>
                         ) : null}
