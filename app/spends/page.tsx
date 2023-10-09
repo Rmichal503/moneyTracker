@@ -33,7 +33,6 @@ export default function page() {
                 email:data.session?.user.email,
                 id:data.session?.user.id
             })
-            console.log(data.session?.user);
             setSpends(spends)
         }
         fetchSpends()
