@@ -97,7 +97,36 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      addcurrentvalue: {
+        Args: {
+          p_id: string
+          p_value: number
+          p_title: string
+          p_label: string
+          p_creator: string
+          p_email: string | null
+        }
+        Returns: undefined
+      }
+      deletecard: {
+        Args: {
+          p_id: string
+          p_title: string
+        }
+        Returns: undefined
+      }
+      edittitle: {
+        Args: {
+          p_id: string
+          p_title: string
+          p_newtitle: string
+        }
+        Returns: undefined
+      }
+      hello_world: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

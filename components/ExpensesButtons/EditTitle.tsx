@@ -18,16 +18,17 @@ const editTitle = async (title:string,id:string,newTitle:string|undefined)=>{
         alert('Enter a new title for the card')
         return
     }
-    const {error} = await supabase.from('spends').update({title:newTitle}).eq('id',id)
+    const {error} = await supabase.rpc('edittitle',{p_id:id,p_title:title,p_newtitle:newTitle})
+    // const {error} = await supabase.from('spends').update({title:newTitle}).eq('id',id)
     if(error){
         console.error(error)
         return
     }
-    const {error:expenseError} = await supabase.from('expenses').update({title:newTitle}).eq('title',title)
-    if(expenseError){
-        console.error(expenseError)
-        return
-    }
+    // const {error:expenseError} = await supabase.from('expenses').update({title:newTitle}).eq('title',title)
+    // if(expenseError){
+    //     console.error(expenseError)
+    //     return
+    // }
     setTimeout(() => {
         location.reload()
     }, 400)

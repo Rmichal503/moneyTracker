@@ -20,12 +20,15 @@ const percentageOfLeftMoney = (maxValue: number, minValue: number) => {
 }
 
 
-const addCurrentValue = async (id: string, currentValue: number, value: number, title: string | null, expenseLabel: string | null, creator: string, shareEmail:string|null) => {
+const addCurrentValue = async (id: string, currentValue: number, value: number, title: string, expenseLabel: string, creator: string, shareEmail:string|null) => {
     if (Math.sign(value) === -1) return alert('The expense must be entered as a positive number')
-    const { error } = await supabase.from('spends').update({ currentValue: (currentValue + value) }).eq('id', id)
-    const { error: expensesError } = await supabase.from('expenses').insert({ value: value, title: title, label: expenseLabel, creator: creator, email:shareEmail })
-    if (error) console.error(error)
-    if (expensesError) console.error(expensesError)
+    const {error} = await supabase.rpc('addcurrentvalue',{p_id:id,p_value:value,p_title:title,p_label:expenseLabel,p_creator:creator,p_email:shareEmail})
+    // const { error } = await supabase.from('spends').update({ currentValue: (currentValue + value) }).eq('id', id)
+    // const { error: expensesError } = await supabase.from('expenses').insert({ value: value, title: title, label: expenseLabel, creator: creator, email:shareEmail })
+    if (error){
+        console.error(error)
+        return 
+    } 
     setTimeout(() => {
         location.reload()
     }, 600)
@@ -73,7 +76,7 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
             </div>
             {(ownerId === user_id) ? (<div className='flex space-x-2 items-center'>
                 <div className="flex flex-col space-y-1 w-full">
-                    <TextInput className='rounded-md' placeholder='Expense label' onChange={(e) => {
+                    <TextInput required className='rounded-md' placeholder='Expense label' onChange={(e) => {
                         e.preventDefault()
                         setExpenseLabel(e.target.value)
                     }} />
@@ -82,11 +85,11 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
                 <Button color={color as ProgressBarColor} className='rounded-md aspect-square' icon={Coins} variant='secondary' onClick={(e) => {
                     e.preventDefault()
                     if ((currentValue + editCurrentValue) > maxValue) { return alert('Over budget!') }
-                    addCurrentValue(id, currentValue, editCurrentValue, title, (expenseLabel === undefined ? null : expenseLabel), (email === undefined ? 'no data' : email),(shared_with ? shared_with : null))
+                    addCurrentValue(id, currentValue, editCurrentValue, title!, expenseLabel!, (email === undefined ? 'no data' : email),(shared_with ? shared_with : null))
                 }} ></Button>
             </div>) : ((share_edit && (shared_with !== null || shared_with !== '')) ? (<div className='flex space-x-2 items-center'>
                 <div className="flex flex-col space-y-1 w-full">
-                    <TextInput className='rounded-md' placeholder='Expense label' onChange={(e) => {
+                    <TextInput required className='rounded-md' placeholder='Expense label' onChange={(e) => {
                         e.preventDefault()
                         setExpenseLabel(e.target.value)
                     }} />
@@ -95,7 +98,7 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
                 <Button color={color as ProgressBarColor} className='rounded-md aspect-square' icon={Coins} variant='secondary' onClick={(e) => {
                     e.preventDefault()
                     if ((currentValue + editCurrentValue) > maxValue) { return alert('Over budget!') }
-                    addCurrentValue(id, currentValue, editCurrentValue, title, (expenseLabel === undefined ? null : expenseLabel), (email === undefined ? 'no data' : email),(shared_with ? shared_with : null))
+                    addCurrentValue(id, currentValue, editCurrentValue, title!, expenseLabel!, (email === undefined ? 'no data' : email),(shared_with ? shared_with : null))
                 }} ></Button>
             </div>) : null)}
             {toogle ? <div className='flex flex-col space-y-1'>
