@@ -3,7 +3,7 @@ import { Database, Expenses, Spend } from '@/types/supabase'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Card, Text, Metric, ProgressBar, NumberInput, Button, Flex, TextInput, Badge } from '@tremor/react'
 import dayjs from 'dayjs'
-import { ChevronDown, Coins, Loader, Settings, Users } from 'lucide-react'
+import { ChevronDown, Coins, Loader, Settings, Trash, Users } from 'lucide-react'
 import React, { useState } from 'react'
 import { Table, TableHead, TableHeaderCell, TableBody, TableRow, TableCell } from "@tremor/react";
 import DeleteCard from './ExpensesButtons/DeleteCard'
@@ -34,6 +34,17 @@ const addCurrentValue = async (id: string, currentValue: number, value: number, 
     }, 600)
 }
 
+const deleteExpense = async(id:number)=>{
+    const {error} = await supabase.from('expenses').delete().eq('id',id);
+    if(error){
+        console.log(error);
+        return
+    }
+    setTimeout(() => {
+        location.reload()
+    }, 400)
+}
+
 
 
 
@@ -47,7 +58,7 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
     const { id, maxValue, currentValue, title, color, shared_with, share_edit, user_id } = spend
     const { email, id: ownerId } = owner
     const fetchExpenses = async (title: string) => {
-        const { error, data } = await supabase.from('expenses').select('created_at,value,label,creator').eq('title', title)
+        const { error, data } = await supabase.from('expenses').select('id,created_at,value,label,creator').eq('title', title)
         if (data !== null) {
             return setExpenses(data)
         }
@@ -119,10 +130,10 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
                     (<Table>
                         <TableHead>
                             <TableRow>
-                                <TableHeaderCell>Date</TableHeaderCell>
-                                <TableHeaderCell>Label</TableHeaderCell>
-                                <TableHeaderCell>Value</TableHeaderCell>
-                                <TableHeaderCell>User</TableHeaderCell>
+                                <TableHeaderCell className='text-center'>Date</TableHeaderCell>
+                                <TableHeaderCell className='text-center'>Label</TableHeaderCell>
+                                <TableHeaderCell className='text-center'>Value</TableHeaderCell>
+                                <TableHeaderCell className='text-center'>User</TableHeaderCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -138,7 +149,9 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
                                         <Text color={color as ProgressBarColor}>{el.value}</Text>
                                     </TableCell>
                                     <TableCell>
-                                        <Text>{upperCaseTitle}</Text>
+                                        <Text className='flex items-center space-x-1'><p>{upperCaseTitle}</p> {(email === el.creator)?<Button onClick={()=>{
+                                            deleteExpense(el.id)
+                                        }} className='aspect-square w-3 h-3 p-3' variant='secondary' icon={Trash} color='red'/>:null}</Text>
                                     </TableCell>
                                 </TableRow>
                                 )

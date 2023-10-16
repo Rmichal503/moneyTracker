@@ -153,6 +153,7 @@ export interface Spend {
   user_id: string | null
 }
 export interface Expenses {
+  id: number
   created_at?: string
   label?: string | null
   value?: number
