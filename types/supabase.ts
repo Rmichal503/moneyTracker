@@ -123,9 +123,19 @@ export interface Database {
         }
         Returns: undefined
       }
-      hello_world: {
-        Args: Record<PropertyKey, never>
-        Returns: string
+      resetecard: {
+        Args: {
+          p_id: string
+          p_title: string
+        }
+        Returns: undefined
+      }
+      deleteexpenses: {
+        Args: {
+          p_id: number
+          p_title: string
+        }
+        Returns: undefined
       }
     }
     Enums: {
