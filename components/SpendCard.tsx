@@ -67,7 +67,7 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
     }
 
     return (
-        <Card decoration='top' decorationColor={color as ProgressBarColor} className='self-start rounded-md drop-shadow-md space-y-2 p-4 h-fit w-full'>
+        <Card decoration='top' decorationColor={color as ProgressBarColor} className='rounded-md drop-shadow-md space-y-2 p-4 h-fit w-full'>
             <Flex>
                 <Metric color={color as ProgressBarColor}>{title}</Metric>
                 {(ownerId === user_id) ? (<div className='flex space-x-1'>{(shared_with !== null) ? <Badge icon={Users} color={color as ProgressBarColor}>Shared</Badge> : null}<Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e) => {
@@ -154,9 +154,6 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
                                     </TableCell>
                                     <TableCell className='text-center p-2 md:p-4'>
                                         <Text className='flex items-center justify-center space-x-1'><p>{upperCaseTitle}</p> {(email === el.creator) ?
-                                            // <Button onClick={() => {
-                                            //     deleteExpense(el.id)
-                                            // }} className='aspect-square w-3 h-3 p-3' variant='secondary' icon={Trash} color='red' /> 
                                             <Trash size={14} className='stroke-rose-500 hover:stroke-rose-700 hover:cursor-pointer transition-colors duration-300' onClick={() => {
                                                 deleteExpense(el.id,title!)
                                             }} />
