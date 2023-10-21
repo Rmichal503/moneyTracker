@@ -1,5 +1,6 @@
 import { Owner } from '@/app/spends/page'
 import { Spend } from '@/types/supabase'
+import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 import SpendCard from './SpendCard'
 
@@ -29,24 +30,29 @@ export default function DynamicGrid({ spends, owner }: { spends: Spend[], owner:
         }
         return setEffect(true)
     }, [])
+    const columnClass = clsx({
+        'w-full h-full flex flex-col space-y-2 md:space-y-4 xl:space-y-8 p-1 md:p-2 xl:p-4':rwd===1,
+        'w-1/2 h-full flex flex-col space-y-2 md:space-y-4 xl:space-y-8 p-1 md:p-2 xl:p-4':rwd===2,
+        'w-1/3 h-full flex flex-col space-y-2 md:space-y-4 xl:space-y-8 p-1 md:p-2 xl:p-4':rwd===3,
+    })
     const mapItems = (items:Spend[],rwd:number) => {
         const oneColumnItems = items.filter((item, index) => index % rwd === 0);
         const twoColumnItems = items.filter((item, index) => index % rwd === 1);
         const threeColumnItems = items.filter((item, index) => index % rwd === 2);
-      
+        
         return (
           <>
-            {oneColumnItems.length > 0?(<div key={'columnOne'} className='w-full h-full flex flex-col space-y-4 md:space-y-8 xl:space-y-12'>
+            {oneColumnItems.length > 0?(<div key={'columnOne'} className={columnClass}>
                 {oneColumnItems.map(el=>{
                     return <SpendCard key={el.id} spend={el} owner={owner}/>
                 })}
             </div>):null}
-            {twoColumnItems.length > 0?(<div key={'columnTwo'} className='w-full h-full flex flex-col space-y-1 md:space-y-4 xl:space-y-8'>
+            {twoColumnItems.length > 0?(<div key={'columnTwo'} className={columnClass}>
                 {twoColumnItems.map(el=>{
                     return <SpendCard key={el.id} spend={el} owner={owner}/>
                 })}
             </div>):null}
-            {threeColumnItems.length > 0?(<div key={'columnThree'} className='w-full h-full flex flex-col space-y-1 md:space-y-4 xl:space-y-8'>
+            {threeColumnItems.length > 0?(<div key={'columnThree'} className={columnClass}>
                 {threeColumnItems.map(el=>{
                     return <SpendCard key={el.id} spend={el} owner={owner}/>
                 })}

@@ -43,7 +43,7 @@ export default function page() {
         <>
             <Navbar />
             {((spends === undefined) && (loading)) ? <Loader className='animate-spin my-auto' size={200} /> : (
-                    <div className='w-full h-fit flex gap-1 md:gap-4 md:space-y-0'>
+                    <div className='w-full h-fit flex md:space-y-0'>
                         {/* grid grid-cols-1 grid-rows-1 md:grid-cols-2 xl:grid-cols-3 place-content-center md:place-content-evenly */}
                         {spends !== undefined ? (
                         // <>
