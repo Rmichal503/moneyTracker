@@ -5,6 +5,7 @@ import { Database, Spend } from '../../types/supabase'
 import SpendCard from '@/components/SpendCard';
 import Navbar from '@/components/Navbar';
 import { Loader } from 'lucide-react';
+import DynamicGrid from '@/components/DynamicGrid';
 
 const supabase = createClientComponentClient<Database>()
 const fetchData = async () => {
@@ -42,12 +43,16 @@ export default function page() {
         <>
             <Navbar />
             {((spends === undefined) && (loading)) ? <Loader className='animate-spin my-auto' size={200} /> : (
-                    <div className='w-full h-fit grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 place-content-center md:place-content-evenly gap-1 md:gap-4 md:space-y-0'>
-                        {spends !== undefined ? (<>
-                            {spends.map((el) => {
-                                return (<SpendCard owner={owner!} spend={el} key={el.id} />)
-                            })}
-                        </>
+                    <div className='w-full h-fit flex md:space-y-0'>
+                        {/* grid grid-cols-1 grid-rows-1 md:grid-cols-2 xl:grid-cols-3 place-content-center md:place-content-evenly */}
+                        {spends !== undefined ? (
+                        // <>
+                        //     {spends.map((el,i) => {
+                        //         console.log(i);
+                        //         return (<SpendCard owner={owner!} spend={el} key={el.id} />)
+                        //     })}
+                        // </>
+                        <DynamicGrid spends={spends} owner={owner!}/>
                         ) : null}
                     </div>
             )}

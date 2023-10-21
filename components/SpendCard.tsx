@@ -21,7 +21,7 @@ const percentageOfLeftMoney = (maxValue: number, minValue: number) => {
 }
 
 
-const addCurrentValue = async (id: string, currentValue: number, value: number, title: string, expenseLabel: string, creator: string, shareEmail: string | null) => {
+const addCurrentValue = async (id: string, value: number, title: string, expenseLabel: string, creator: string, shareEmail: string | null) => {
     if (Math.sign(value) === -1) return alert('The expense must be entered as a positive number')
     const { error } = await supabase.rpc('addcurrentvalue', { p_id: id, p_value: value, p_title: title, p_label: expenseLabel, p_creator: creator, p_email: shareEmail })
     // const { error } = await supabase.from('spends').update({ currentValue: (currentValue + value) }).eq('id', id)
@@ -67,7 +67,7 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
     }
 
     return (
-        <Card decoration='top' decorationColor={color as ProgressBarColor} className='self-start rounded-md drop-shadow-md space-y-2 p-4 h-fit w-full'>
+        <Card decoration='top' decorationColor={color as ProgressBarColor} className='rounded-md drop-shadow-md space-y-2 p-4 h-fit w-full'>
             <Flex>
                 <Metric color={color as ProgressBarColor}>{title}</Metric>
                 {(ownerId === user_id) ? (<div className='flex space-x-1'>{(shared_with !== null) ? <Badge icon={Users} color={color as ProgressBarColor}>Shared</Badge> : null}<Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e) => {
@@ -97,7 +97,7 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
                 <Button color={color as ProgressBarColor} className='rounded-md aspect-square' icon={Coins} variant='secondary' onClick={(e) => {
                     e.preventDefault()
                     if ((currentValue + editCurrentValue) > maxValue) { return alert('Over budget!') }
-                    addCurrentValue(id, currentValue, editCurrentValue, title!, expenseLabel!, (email === undefined ? 'no data' : email), (shared_with ? shared_with : null))
+                    addCurrentValue(id, editCurrentValue, title!, expenseLabel!, (email === undefined ? 'no data' : email), (shared_with ? shared_with : null))
                 }} ></Button>
             </div>) : ((share_edit && (shared_with !== null || shared_with !== '')) ? (<div className='flex space-x-2 items-center'>
                 <div className="flex flex-col space-y-1 w-full">
@@ -110,7 +110,7 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
                 <Button color={color as ProgressBarColor} className='rounded-md aspect-square' icon={Coins} variant='secondary' onClick={(e) => {
                     e.preventDefault()
                     if ((currentValue + editCurrentValue) > maxValue) { return alert('Over budget!') }
-                    addCurrentValue(id, currentValue, editCurrentValue, title!, expenseLabel!, (email === undefined ? 'no data' : email), (shared_with ? shared_with : null))
+                    addCurrentValue(id, editCurrentValue, title!, expenseLabel!, (email === undefined ? 'no data' : email), (shared_with ? shared_with : null))
                 }} ></Button>
             </div>) : null)}
             {toogle ? <div className='flex flex-col space-y-1'>
@@ -140,23 +140,20 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
                                 <TableHeaderCell className='text-center'>User</TableHeaderCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody className='text-xs md:text-base'>
+                        <TableBody className='text-xs md:text-sm xl:text-base'>
                             {expenses?.map((el) => {
                                 const user = el.creator.split('@').at(0)
                                 const upperCaseTitle = user!.charAt(0).toUpperCase() + user!.slice(1)
                                 return (<TableRow key={el.created_at}>
-                                    <TableCell className='text-center p-2 md:p-4'>{dayjs(el.created_at).format('DD/MM HH:mm')}</TableCell>
-                                    <TableCell className='text-center p-2 md:p-4'>
+                                    <TableCell className='text-center p-1 md:p-2'>{dayjs(el.created_at).format('DD/MM HH:mm')}</TableCell>
+                                    <TableCell className='text-center p-1 md:p-2'>
                                         <Text>{el.label}</Text>
                                     </TableCell>
-                                    <TableCell className='text-center p-2 md:p-4'>
+                                    <TableCell className='text-center p-1 md:p-2'>
                                         <Text color={color as ProgressBarColor}>{el.value}</Text>
                                     </TableCell>
-                                    <TableCell className='text-center p-2 md:p-4'>
+                                    <TableCell className='text-center p-1 md:p-2'>
                                         <Text className='flex items-center justify-center space-x-1'><p>{upperCaseTitle}</p> {(email === el.creator) ?
-                                            // <Button onClick={() => {
-                                            //     deleteExpense(el.id)
-                                            // }} className='aspect-square w-3 h-3 p-3' variant='secondary' icon={Trash} color='red' /> 
                                             <Trash size={14} className='stroke-rose-500 hover:stroke-rose-700 hover:cursor-pointer transition-colors duration-300' onClick={() => {
                                                 deleteExpense(el.id,title!)
                                             }} />
