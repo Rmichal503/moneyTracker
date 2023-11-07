@@ -10,14 +10,31 @@ const supabase = createClientComponentClient<Database>()
 
 const addNewList = async (title: string | undefined, color: string, maxValue: number, emailToShareWith: string | null, shareEdit: boolean) => {
     if (title === undefined) return
+    if(emailToShareWith){
+        try {
+            await supabase.rpc('addsharecard',{p_email:emailToShareWith,p_color:color,p_maxvalue:maxValue,p_title:title})
+            //make rpc fuction that will fetch data from card table and share table based on card id to check share_edit and because of that card could be share with more than one user
+            // setTimeout(() => {
+            //     location.reload()
+            // }, 400)
+        } catch (error) {
+            alert(`${error}`)
+        }
+        return
+    }
     try {
-        await supabase.from('spends').insert({
-            title: title,
-            color: color,
-            maxValue: maxValue,
-            shared_with: emailToShareWith,
-            share_edit: shareEdit
+        await supabase.from('card').insert({
+            title:title,
+            color:color,
+            max_value:maxValue,
         })
+        // await supabase.from('spends').insert({
+        //     title: title,
+        //     color: color,
+        //     maxValue: maxValue,
+        //     shared_with: emailToShareWith,
+        //     share_edit: shareEdit
+        // })
         setTimeout(() => {
             location.reload()
         }, 400)

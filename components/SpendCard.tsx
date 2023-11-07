@@ -56,7 +56,7 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
     const [expenses, setExpenses] = useState<Expenses[]>()
     const [toogleExpenses, setToogleExpenses] = useState(false)
 
-    const { id, maxValue, currentValue, title, color, shared_with, share_edit, user_id } = spend
+    const { id, max_value, current_value, title, color, shared, shared_edit} = spend
     const { email, id: ownerId } = owner
     const fetchExpenses = async (title: string) => {
         const { error, data } = await supabase.from('expenses').select('id,created_at,value,label,creator').eq('title', title)
@@ -70,7 +70,7 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
         <Card decoration='top' decorationColor={color as ProgressBarColor} className='rounded-md drop-shadow-md space-y-2 p-4 h-fit w-full'>
             <Flex>
                 <Metric color={color as ProgressBarColor}>{title}</Metric>
-                {(ownerId === user_id) ? (<div className='flex space-x-1'>{(shared_with !== null) ? <Badge icon={Users} color={color as ProgressBarColor}>Shared</Badge> : null}<Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e) => {
+                {shared ? (<div className='flex space-x-1'>{(shared !== null) ? <Badge icon={Users} color={color as ProgressBarColor}>Shared</Badge> : null}<Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e) => {
                     e.preventDefault()
                     setToogle(prev => { return !prev })
                 }}></Button></div>) : (<Badge icon={Users} color={color as ProgressBarColor}>Shared</Badge>)}
@@ -78,13 +78,13 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
             <div>
                 <Flex>
                     <span className='flex space-x-1'>
-                        <Text color={color as ProgressBarColor}>{currentValue}</Text> <Text> &bull; {percentageOfLeftMoney(maxValue, currentValue)}%</Text>
+                        <Text color={color as ProgressBarColor}>{current_value}</Text> <Text> &bull; {percentageOfLeftMoney(max_value, current_value)}%</Text>
                     </span>
                     <span className='flex space-x-1'>
-                        <Text>{Math.round(((maxValue - currentValue) + Number.EPSILON) * 100) / 100} &bull; </Text> <Text color={color as ProgressBarColor}> {maxValue}</Text>
+                        <Text>{Math.round(((max_value - current_value) + Number.EPSILON) * 100) / 100} &bull; </Text> <Text color={color as ProgressBarColor}> {max_value}</Text>
                     </span>
                 </Flex>
-                <ProgressBar className='rounded' color={color as ProgressBarColor} showAnimation={true} value={percentageOfLeftMoney(maxValue, currentValue)} />
+                <ProgressBar className='rounded' color={color as ProgressBarColor} showAnimation={true} value={percentageOfLeftMoney(max_value, current_value)} />
             </div>
             {(ownerId === user_id) ? (<div className='flex space-x-2 items-center'>
                 <div className="flex flex-col space-y-1 w-full">
@@ -96,10 +96,10 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
                 </div>
                 <Button color={color as ProgressBarColor} className='rounded-md aspect-square' icon={Coins} variant='secondary' onClick={(e) => {
                     e.preventDefault()
-                    if ((currentValue + editCurrentValue) > maxValue) { return alert('Over budget!') }
-                    addCurrentValue(id, editCurrentValue, title!, expenseLabel!, (email === undefined ? 'no data' : email), (shared_with ? shared_with : null))
+                    if ((current_value + editCurrentValue) > max_value) { return alert('Over budget!') }
+                    addCurrentValue(id, editCurrentValue, title!, expenseLabel!, (email === undefined ? 'no data' : email), (shared ? shared : null))
                 }} ></Button>
-            </div>) : ((share_edit && (shared_with !== null || shared_with !== '')) ? (<div className='flex space-x-2 items-center'>
+            </div>) : ((shared_edit && (shared !== null || shared !== '')) ? (<div className='flex space-x-2 items-center'>
                 <div className="flex flex-col space-y-1 w-full">
                     <TextInput required className='rounded-md' placeholder='Expense label' onChange={(e) => {
                         e.preventDefault()
@@ -109,8 +109,8 @@ export default function SpendCard({ spend, owner }: { spend: Spend, owner: Owner
                 </div>
                 <Button color={color as ProgressBarColor} className='rounded-md aspect-square' icon={Coins} variant='secondary' onClick={(e) => {
                     e.preventDefault()
-                    if ((currentValue + editCurrentValue) > maxValue) { return alert('Over budget!') }
-                    addCurrentValue(id, editCurrentValue, title!, expenseLabel!, (email === undefined ? 'no data' : email), (shared_with ? shared_with : null))
+                    if ((current_value + editCurrentValue) > max_value) { return alert('Over budget!') }
+                    addCurrentValue(id, editCurrentValue, title!, expenseLabel!, (email === undefined ? 'no data' : email), (shared ? shared : null))
                 }} ></Button>
             </div>) : null)}
             {toogle ? <div className='flex flex-col space-y-1'>
