@@ -3,7 +3,6 @@ import LinkButton from '@/components/LinkButton'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Metric, Text } from '@tremor/react'
 import { cookies } from 'next/headers'
-import Link from 'next/link'
 import LogoutButton from '../components/LogoutButton'
 import Login from './login/page'
 

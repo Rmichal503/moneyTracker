@@ -88,26 +88,26 @@ export interface Database {
       }
       card_current_expenses: {
         Row: {
-          card_id: number | null
+          card_id: number
           created_at: string
           id: number
-          label: string | null
+          label: string
           user_name: string | null
           value: number
         }
         Insert: {
-          card_id?: number | null
+          card_id: number
           created_at?: string
           id?: number
-          label?: string | null
+          label: string
           user_name?: string | null
           value?: number
         }
         Update: {
-          card_id?: number | null
+          card_id?: number
           created_at?: string
           id?: number
-          label?: string | null
+          label?: string
           user_name?: string | null
           value?: number
         }
@@ -342,6 +342,14 @@ export interface Database {
         }
         Returns: undefined
       }
+      updatecurrentvalue: {
+        Args: {
+          p_id: number
+          p_value: number
+          p_label: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
@@ -370,8 +378,8 @@ export interface Spend {
 }
 export interface Expenses {
   id: number
-  created_at?: string
-  label?: string | null
-  value?: number
-  creator: string
+  created_at: string
+  label: string
+  value: number
+  user_name: string | null
 }
