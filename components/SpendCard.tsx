@@ -56,7 +56,7 @@ export default function SpendCard({ spend }: { spend: Spend }) {
     const [expenses, setExpenses] = useState<Expenses[]>()
     const [toogleExpenses, setToogleExpenses] = useState(false)
 
-    const { id, max_value, current_value, title, color, shared, shared_edit} = spend
+    const { id, max_value, current_value, title, color, shared} = spend
     const fetchExpenses = async (id:number) => {
         const { error, data } = await supabase.from('card_current_expenses').select('id,created_at,value,label,user_name').eq('card_id', id)
         if (data !== null) {
@@ -98,7 +98,7 @@ export default function SpendCard({ spend }: { spend: Spend }) {
                     if ((current_value + editCurrentValue) > max_value) { return alert('Over budget!') }
                     addCurrentValue(id, editCurrentValue, expenseLabel!)
                 }} ></Button>
-            </div>) : ((shared_edit && (shared !== null || shared !== '')) ? (<div className='flex space-x-2 items-center'>
+            </div>) : ((shared && (shared !== null || shared !== '')) ? (<div className='flex space-x-2 items-center'>
                 <div className="flex flex-col space-y-1 w-full">
                     <TextInput required className='rounded-md' placeholder='Expense label' onChange={(e) => {
                         e.preventDefault()
@@ -113,11 +113,11 @@ export default function SpendCard({ spend }: { spend: Spend }) {
                 }} ></Button>
             </div>) : null)}
             {toogle ? <div className='flex flex-col space-y-1'>
-                <MaxLimit color={color} placeholderText={'Set new monthly spending limits'} id={String(id)} />
-                <EditTitle color={color} id={String(id)} title={title!} />
+                <MaxLimit color={color} placeholderText={'Set new monthly spending limits'} id={id} />
+                <EditTitle color={color} id={id} />
                 <div className="flex space-x-1 items-center justify-end">
-                    <ResetCard id={String(id)} title={title!} />
-                    <DeleteCard id={String(id)} title={title!} />
+                    <ResetCard id={id}/>
+                    <DeleteCard id={id} />
                 </div>
             </div> : null}
             <div className='flex justify-center' onClick={() => {

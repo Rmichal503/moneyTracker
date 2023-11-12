@@ -9,7 +9,8 @@ import DynamicGrid from '@/components/DynamicGrid';
 const supabase = createClientComponentClient<Database>()
 const fetchData = async () => {
     // const { data, error } = await supabase.from('spends').select('id,title,maxValue,currentValue,color,shared_with,share_edit,user_id').order('created_at', { ascending: true })
-    const { data, error } = await supabase.from('card').select('id,created_at,current_value,max_value,title,color,shared,shared_edit').order('created_at', { ascending: true })
+    // const { data, error } = await supabase.from('card').select('id,created_at,current_value,max_value,title,color,shared').order('created_at', { ascending: true })
+    const {data,error} = await supabase.rpc('get_cards').order('created_at', {ascending:true})
     // const { data:dataShare, error:errorShare } = await supabase.from('profiles').select('*,card ( * )')
     if (error) {
         console.error(error)

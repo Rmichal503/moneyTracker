@@ -11,37 +11,34 @@ export interface Database {
     Tables: {
       card: {
         Row: {
-          color: string 
+          color: string
           created_at: string
-          current_value: number 
+          current_value: number
           id: number
-          max_value: number 
+          max_value: number
           shared: boolean
-          shared_edit: boolean
-          title: string 
-          user_id: string 
+          title: string
+          user_id: string
         }
         Insert: {
-          color?: string 
+          color?: string
           created_at?: string
-          current_value?: number 
+          current_value?: number
           id?: number
-          max_value?: number 
+          max_value?: number
           shared?: boolean
-          shared_edit?: boolean
-          title?: string 
-          user_id?: string 
+          title?: string
+          user_id?: string
         }
         Update: {
-          color?: string 
+          color?: string
           created_at?: string
-          current_value?: number 
+          current_value?: number
           id?: number
-          max_value?: number 
+          max_value?: number
           shared?: boolean
-          shared_edit?: boolean
-          title?: string 
-          user_id?: string 
+          title?: string
+          user_id?: string
         }
         Relationships: [
           {
@@ -56,16 +53,19 @@ export interface Database {
       card_access: {
         Row: {
           card_id: number | null
+          edit: boolean
           id: number
           user_id: string | null
         }
         Insert: {
           card_id?: number | null
+          edit?: boolean
           id?: number
           user_id?: string | null
         }
         Update: {
           card_id?: number | null
+          edit?: boolean
           id?: number
           user_id?: string | null
         }
@@ -191,48 +191,6 @@ export interface Database {
           }
         ]
       }
-      share_options: {
-        Row: {
-          card_id: number | null
-          created_at: string
-          edit: boolean | null
-          email: string | null
-          id: number
-          user_id_shared_with: string | null
-        }
-        Insert: {
-          card_id?: number | null
-          created_at?: string
-          edit?: boolean | null
-          email?: string | null
-          id?: number
-          user_id_shared_with?: string | null
-        }
-        Update: {
-          card_id?: number | null
-          created_at?: string
-          edit?: boolean | null
-          email?: string | null
-          id?: number
-          user_id_shared_with?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "share_options_card_id_fkey"
-            columns: ["card_id"]
-            isOneToOne: false
-            referencedRelation: "card"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "share_options_user_id_shared_with_fkey"
-            columns: ["user_id_shared_with"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
       spends: {
         Row: {
           color: string
@@ -289,7 +247,7 @@ export interface Database {
           p_title: string
           p_label: string
           p_creator: string
-          p_email: string | null
+          p_email: string
         }
         Returns: undefined
       }
@@ -299,6 +257,7 @@ export interface Database {
           p_title: string
           p_color: string
           p_maxvalue: number
+          p_share_edit: boolean
         }
         Returns: undefined
       }
@@ -324,18 +283,26 @@ export interface Database {
         }
         Returns: undefined
       }
-      hello_world: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      resetcard: {
+      expenses_delete: {
         Args: {
-          p_id: string
-          p_title: string
+          p_id: number
         }
         Returns: undefined
       }
-      resetecard: {
+      get_cards: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: number
+          created_at: string
+          current_value: number
+          max_value: number
+          title: string
+          color: string
+          shared: boolean
+          share_edit: boolean
+        }[]
+      }
+      resetcard: {
         Args: {
           p_id: string
           p_title: string
@@ -367,14 +334,13 @@ export interface Database {
 
 
 export interface Spend {
-  color: string 
+  color: string
   created_at: string
-  current_value: number 
+  current_value: number
   id: number
-  max_value: number 
+  max_value: number
   shared: boolean
-  shared_edit: boolean
-  title: string 
+  title: string
 }
 export interface Expenses {
   id: number

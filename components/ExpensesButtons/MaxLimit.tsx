@@ -8,8 +8,8 @@ import React, { useState } from 'react'
 const supabase = createClientComponentClient<Database>()
 
 
-const addMaxValue = async (id: string, value: number) => {
-    const { error } = await supabase.from('spends').update({ maxValue: value, currentValue:value }).eq('id', id)
+const addMaxValue = async (id: number, value: number) => {
+    const { error } = await supabase.from('card').update({ max_value: value, current_value:value }).eq('id', id)
     if (error) console.error(error)
     setTimeout(() => {
         location.reload()
@@ -18,7 +18,7 @@ const addMaxValue = async (id: string, value: number) => {
 
 interface MaxLimitButtonProps{
     color: string,
-    id: string,
+    id: number,
     placeholderText: string
 }
 
