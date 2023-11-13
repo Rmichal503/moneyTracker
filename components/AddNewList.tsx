@@ -10,14 +10,31 @@ const supabase = createClientComponentClient<Database>()
 
 const addNewList = async (title: string | undefined, color: string, maxValue: number, emailToShareWith: string | null, shareEdit: boolean) => {
     if (title === undefined) return
+    if (emailToShareWith) {
+        try {
+            await supabase.rpc('addsharecard', { p_email: emailToShareWith, p_color: color, p_maxvalue: maxValue, p_title: title, p_share_edit: shareEdit })
+            //make rpc fuction that will fetch data from card table and share table based on card id to check share_edit and because of that card could be share with more than one user
+            // setTimeout(() => {
+            //     location.reload()
+            // }, 400)
+        } catch (error) {
+            alert(`${error}`)
+        }
+        return
+    }
     try {
-        await supabase.from('spends').insert({
+        await supabase.from('card').insert({
             title: title,
             color: color,
-            maxValue: maxValue,
-            shared_with: emailToShareWith,
-            share_edit: shareEdit
+            max_value: maxValue,
         })
+        // await supabase.from('spends').insert({
+        //     title: title,
+        //     color: color,
+        //     maxValue: maxValue,
+        //     shared_with: emailToShareWith,
+        //     share_edit: shareEdit
+        // })
         setTimeout(() => {
             location.reload()
         }, 400)
@@ -74,7 +91,7 @@ export default function () {
                         <div className="flex justify-end px-3 py-2 items-center rounded-md space-x-1">
                             <label className='text-tremor-content text-tremor-default' htmlFor="shareEdit">Allow user to edit this card?</label>
                             <input type='checkbox' name='shareEdit' onChange={() => {
-                                setShareEdit(prev=>{return !prev})
+                                setShareEdit(prev => { return !prev })
                             }} />
                         </div>
                     </>

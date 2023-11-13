@@ -1,17 +1,13 @@
-import { Owner } from '@/app/spends/page'
 import { Spend } from '@/types/supabase'
 import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 import SpendCard from './SpendCard'
 
-export default function DynamicGrid({ spends, owner }: { spends: Spend[], owner: Owner }) {
+export default function DynamicGrid({ spends }: { spends: Spend[] }) {
     const [rwd, setRwd] = useState<number>()
-    // const [oneDiv, setOneDiv] = useState<Array<React.Component>|null>(null);
-    // const [twoDiv, setTwoDiv] = useState<Array<React.Component>|null>(null);
-    // const [threeDiv, setThreeDiv] = useState<Array<React.Component>|null>(null);
     const [effect, setEffect] = useState(false)
     useEffect(() => {
-        console.log(window.innerWidth);
+        // console.log(window.innerWidth);
         switch (true) {
             case (window.innerWidth >= 1280):
                 console.log(3);
@@ -44,17 +40,17 @@ export default function DynamicGrid({ spends, owner }: { spends: Spend[], owner:
           <>
             {oneColumnItems.length > 0?(<div key={'columnOne'} className={columnClass}>
                 {oneColumnItems.map(el=>{
-                    return <SpendCard key={el.id} spend={el} owner={owner}/>
+                    return <SpendCard key={el.id} spend={el} />
                 })}
             </div>):null}
             {twoColumnItems.length > 0?(<div key={'columnTwo'} className={columnClass}>
                 {twoColumnItems.map(el=>{
-                    return <SpendCard key={el.id} spend={el} owner={owner}/>
+                    return <SpendCard key={el.id} spend={el} />
                 })}
             </div>):null}
             {threeColumnItems.length > 0?(<div key={'columnThree'} className={columnClass}>
                 {threeColumnItems.map(el=>{
-                    return <SpendCard key={el.id} spend={el} owner={owner}/>
+                    return <SpendCard key={el.id} spend={el} />
                 })}
             </div>):null}
           </>

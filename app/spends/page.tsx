@@ -2,38 +2,31 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import React, { useEffect, useState } from 'react'
 import { Database, Spend } from '../../types/supabase'
-import SpendCard from '@/components/SpendCard';
 import Navbar from '@/components/Navbar';
 import { Loader } from 'lucide-react';
 import DynamicGrid from '@/components/DynamicGrid';
 
 const supabase = createClientComponentClient<Database>()
 const fetchData = async () => {
-    const { data, error } = await supabase.from('spends').select('id,title,maxValue,currentValue,color,shared_with,share_edit,user_id').order('created_at', { ascending: true })
+    // const { data, error } = await supabase.from('spends').select('id,title,maxValue,currentValue,color,shared_with,share_edit,user_id').order('created_at', { ascending: true })
+    // const { data, error } = await supabase.from('card').select('id,created_at,current_value,max_value,title,color,shared').order('created_at', { ascending: true })
+    const {data,error} = await supabase.rpc('get_cards').order('created_at', {ascending:true})
+    // const { data:dataShare, error:errorShare } = await supabase.from('profiles').select('*,card ( * )')
     if (error) {
         console.error(error)
         return
     }
+    console.log(data);
+    // console.log(dataShare);
     return data
-}
-
-export interface Owner {
-    email: string | undefined
-    id: string | undefined
 }
 
 export default function page() {
     const [spends, setSpends] = useState<Spend[]>()
-    const [owner, setOwner] = useState<Owner>()
     const [loading, setLoading] = useState(true)
     useEffect(() => {
         const fetchSpends = async () => {
             const spends = await fetchData()
-            const {data} = await supabase.auth.getSession()
-            setOwner({
-                email:data.session?.user.email,
-                id:data.session?.user.id
-            })
             setSpends(spends)
         }
         fetchSpends()
@@ -52,7 +45,7 @@ export default function page() {
                         //         return (<SpendCard owner={owner!} spend={el} key={el.id} />)
                         //     })}
                         // </>
-                        <DynamicGrid spends={spends} owner={owner!}/>
+                        <DynamicGrid spends={spends}/>
                         ) : null}
                     </div>
             )}
