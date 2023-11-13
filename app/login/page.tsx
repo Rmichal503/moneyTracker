@@ -35,11 +35,11 @@ export default function Login() {
             <button className="tremor-Button-root flex-shrink-0 inline-flex justify-center items-center group font-medium outline-none rounded-tremor-default shadow-tremor-input dark:shadow-dark-tremor-input border px-4 py-2 text-sm bg-tremor-brand dark:bg-dark-tremor-brand border-tremor-brand dark:border-dark-tremor-brand text-tremor-brand-inverted dark:text-dark-tremor-brand-inverted hover:bg-tremor-brand-emphasis dark:hover:bg-dark-tremor-brand-emphasis hover:border-tremor-brand-emphasis dark:hover:border-dark-tremor-brand-emphasis">
               Sign In
             </button>
-            <button className='className="tremor-Button-root flex-shrink-0 inline-flex justify-center items-center group font-medium outline-none rounded-tremor-default shadow-tremor-input dark:shadow-dark-tremor-input border px-2.5 py-1.5 text-sm text-tremor-brand dark:text-dark-tremor-brand bg-transparent border-tremor-brand dark:border-dark-tremor-brand hover:text-tremor-brand-emphasis dark:hover:text-dark-tremor-brand-emphasis hover:bg-tremor-brand-faint dark:hover:bg-dark-tremor-brand-faint space-x-1"'
+            {/* <button className='className="tremor-Button-root flex-shrink-0 inline-flex justify-center items-center group font-medium outline-none rounded-tremor-default shadow-tremor-input dark:shadow-dark-tremor-input border px-2.5 py-1.5 text-sm text-tremor-brand dark:text-dark-tremor-brand bg-transparent border-tremor-brand dark:border-dark-tremor-brand hover:text-tremor-brand-emphasis dark:hover:text-dark-tremor-brand-emphasis hover:bg-tremor-brand-faint dark:hover:bg-dark-tremor-brand-faint space-x-1"'
               formAction="/auth/sign-up"
             >
               Sign Up
-            </button>
+            </button> */}
           </div>
         </form>
           <Messages />
