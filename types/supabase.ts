@@ -300,6 +300,7 @@ export interface Database {
           color: string
           shared: boolean
           share_edit: boolean
+          owner: boolean
         }[]
       }
       resetcard: {
@@ -341,6 +342,8 @@ export interface Spend {
   max_value: number
   shared: boolean
   title: string
+  share_edit: boolean | null
+  owner: boolean
 }
 export interface Expenses {
   id: number

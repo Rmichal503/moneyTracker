@@ -18,16 +18,10 @@ const editTitle = async (id:number,newTitle:string|undefined)=>{
         return
     }
     const {error} = await supabase.from('card').update({title:newTitle}).eq('id',id)
-    // const {error} = await supabase.from('spends').update({title:newTitle}).eq('id',id)
     if(error){
         console.error(error)
         return
     }
-    // const {error:expenseError} = await supabase.from('expenses').update({title:newTitle}).eq('title',title)
-    // if(expenseError){
-    //     console.error(expenseError)
-    //     return
-    // }
     setTimeout(() => {
         location.reload()
     }, 400)

@@ -9,7 +9,7 @@ const supabase = createClientComponentClient<Database>()
 
 
 const addMaxValue = async (id: number, value: number) => {
-    const { error } = await supabase.from('card').update({ max_value: value, current_value:value }).eq('id', id)
+    const { error } = await supabase.from('card').update({ max_value: value}).eq('id', id)
     if (error) console.error(error)
     setTimeout(() => {
         location.reload()

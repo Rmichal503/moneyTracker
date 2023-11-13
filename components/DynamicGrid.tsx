@@ -5,12 +5,9 @@ import SpendCard from './SpendCard'
 
 export default function DynamicGrid({ spends }: { spends: Spend[] }) {
     const [rwd, setRwd] = useState<number>()
-    // const [oneDiv, setOneDiv] = useState<Array<React.Component>|null>(null);
-    // const [twoDiv, setTwoDiv] = useState<Array<React.Component>|null>(null);
-    // const [threeDiv, setThreeDiv] = useState<Array<React.Component>|null>(null);
     const [effect, setEffect] = useState(false)
     useEffect(() => {
-        console.log(window.innerWidth);
+        // console.log(window.innerWidth);
         switch (true) {
             case (window.innerWidth >= 1280):
                 console.log(3);
