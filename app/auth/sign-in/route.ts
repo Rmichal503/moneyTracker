@@ -1,3 +1,4 @@
+import { Database } from '@/types/supabase'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
@@ -9,7 +10,7 @@ export async function POST(request: Request) {
   const formData = await request.formData()
   const email = String(formData.get('email'))
   const password = String(formData.get('password'))
-  const supabase = createRouteHandlerClient({ cookies })
+  const supabase = createRouteHandlerClient<Database>({ cookies })
 
   const { error } = await supabase.auth.signInWithPassword({
     email,
@@ -25,8 +26,15 @@ export async function POST(request: Request) {
       }
     )
   }
-
-  return NextResponse.redirect(`${requestUrl.origin}/spends`, {
+  const {data} = await supabase.from('profiles').select('*').eq('user_email',email);
+  if(data === null){
+    return NextResponse.redirect(`${requestUrl.origin}/spends`, {
+      // a 301 status is required to redirect from a POST to a GET route
+      status: 301,
+    })
+  }
+  const {user_name} = data[0]
+  return NextResponse.redirect(`${requestUrl.origin}/spends?email=${email}&user_name=${user_name}`, {
     // a 301 status is required to redirect from a POST to a GET route
     status: 301,
   })
