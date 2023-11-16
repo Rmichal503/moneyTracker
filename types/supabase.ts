@@ -121,47 +121,6 @@ export interface Database {
           }
         ]
       }
-      expenses: {
-        Row: {
-          created_at: string
-          creator: string
-          email: string | null
-          id: number
-          label: string | null
-          title: string | null
-          user_id: string | null
-          value: number
-        }
-        Insert: {
-          created_at?: string
-          creator?: string
-          email?: string | null
-          id?: number
-          label?: string | null
-          title?: string | null
-          user_id?: string | null
-          value: number
-        }
-        Update: {
-          created_at?: string
-          creator?: string
-          email?: string | null
-          id?: number
-          label?: string | null
-          title?: string | null
-          user_id?: string | null
-          value?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "expenses_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
       profiles: {
         Row: {
           created_at: string
@@ -191,95 +150,18 @@ export interface Database {
           }
         ]
       }
-      spends: {
-        Row: {
-          color: string
-          created_at: string
-          currentValue: number
-          id: string
-          maxValue: number
-          share_edit: boolean
-          shared_with: string | null
-          title: string | null
-          user_id: string | null
-        }
-        Insert: {
-          color?: string
-          created_at?: string
-          currentValue?: number
-          id?: string
-          maxValue?: number
-          share_edit?: boolean
-          shared_with?: string | null
-          title?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          color?: string
-          created_at?: string
-          currentValue?: number
-          id?: string
-          maxValue?: number
-          share_edit?: boolean
-          shared_with?: string | null
-          title?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "spends_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      addcurrentvalue: {
-        Args: {
-          p_id: string
-          p_value: number
-          p_title: string
-          p_label: string
-          p_creator: string
-          p_email: string
-        }
-        Returns: undefined
-      }
-      addsharecard: {
+      add_share_card: {
         Args: {
           p_email: string
           p_title: string
           p_color: string
           p_maxvalue: number
           p_share_edit: boolean
-        }
-        Returns: undefined
-      }
-      deletecard: {
-        Args: {
-          p_id: string
-          p_title: string
-        }
-        Returns: undefined
-      }
-      deleteexpenses: {
-        Args: {
-          p_id: number
-          p_title: string
-        }
-        Returns: undefined
-      }
-      edittitle: {
-        Args: {
-          p_id: string
-          p_title: string
-          p_newtitle: string
         }
         Returns: undefined
       }
@@ -303,18 +185,24 @@ export interface Database {
           owner: boolean
         }[]
       }
-      resetcard: {
-        Args: {
-          p_id: string
-          p_title: string
-        }
-        Returns: undefined
+      get_user_info: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          db_user_email: string
+          db_user_name: string
+        }[]
       }
-      updatecurrentvalue: {
+      update_current_value: {
         Args: {
           p_id: number
           p_value: number
           p_label: string
+        }
+        Returns: undefined
+      }
+      update_user_name: {
+        Args: {
+          p_user_name: string
         }
         Returns: undefined
       }
@@ -327,10 +215,6 @@ export interface Database {
     }
   }
 }
-
-
-
-
 
 
 
@@ -351,4 +235,9 @@ export interface Expenses {
   label: string
   value: number
   user_name: string | null
+}
+
+export interface User {
+  user_name: string
+  user_email: string
 }

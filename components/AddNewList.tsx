@@ -12,11 +12,10 @@ const addNewList = async (title: string | undefined, color: string, maxValue: nu
     if (title === undefined) return
     if (emailToShareWith) {
         try {
-            await supabase.rpc('addsharecard', { p_email: emailToShareWith, p_color: color, p_maxvalue: maxValue, p_title: title, p_share_edit: shareEdit })
-            //make rpc fuction that will fetch data from card table and share table based on card id to check share_edit and because of that card could be share with more than one user
-            // setTimeout(() => {
-            //     location.reload()
-            // }, 400)
+            await supabase.rpc('add_share_card', { p_email: emailToShareWith, p_color: color, p_maxvalue: maxValue, p_title: title, p_share_edit: shareEdit })
+            setTimeout(() => {
+                location.reload()
+            }, 400)
         } catch (error) {
             alert(`${error}`)
         }

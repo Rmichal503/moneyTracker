@@ -26,16 +26,8 @@ export async function POST(request: Request) {
       }
     )
   }
-  const {data} = await supabase.from('profiles').select('*').eq('user_email',email);
-  if(data === null){
     return NextResponse.redirect(`${requestUrl.origin}/spends`, {
       // a 301 status is required to redirect from a POST to a GET route
       status: 301,
     })
-  }
-  const {user_name} = data[0]
-  return NextResponse.redirect(`${requestUrl.origin}/spends?email=${email}&user_name=${user_name}`, {
-    // a 301 status is required to redirect from a POST to a GET route
-    status: 301,
-  })
 }
