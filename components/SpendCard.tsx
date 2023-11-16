@@ -10,6 +10,7 @@ import DeleteCard from './ExpensesButtons/DeleteCard'
 import MaxLimit from './ExpensesButtons/MaxLimit'
 import EditTitle from './ExpensesButtons/EditTitle'
 import ResetCard from './ExpensesButtons/ResetCard'
+import { useUserState } from '@/store/user'
 
 const supabase = createClientComponentClient<Database>()
 
@@ -22,7 +23,7 @@ const percentageOfLeftMoney = (maxValue: number, minValue: number) => {
 
 const addCurrentValue = async (id: number, value: number, expenseLabel: string) => {
     if (Math.sign(value) === -1) return alert('The expense must be entered as a positive number')
-    const { error } = await supabase.rpc('updatecurrentvalue',{p_id:id,p_label:expenseLabel,p_value:value})
+    const { error } = await supabase.rpc('update_current_value', { p_id: id, p_label: expenseLabel, p_value: value })
     if (error) {
         console.error(error)
         return
@@ -32,8 +33,8 @@ const addCurrentValue = async (id: number, value: number, expenseLabel: string) 
     }, 400)
 }
 
-const deleteExpense = async (id: number, title:string) => {
-    const { error } = await supabase.rpc('deleteexpenses',{p_id:id,p_title:title})
+const deleteExpense = async (id: number) => {
+    const { error } = await supabase.rpc('expenses_delete', { p_id: id })
     if (error) {
         console.log(error);
         return
@@ -52,9 +53,9 @@ export default function SpendCard({ spend }: { spend: Spend }) {
     const [toogle, setToogle] = useState(false)
     const [expenses, setExpenses] = useState<Expenses[]>()
     const [toogleExpenses, setToogleExpenses] = useState(false)
-
-    const { id, max_value, current_value, title, color, shared, share_edit, owner} = spend
-    const fetchExpenses = async (id:number) => {
+    const { user_name, user_email } = useUserState()
+    const { id, max_value, current_value, title, color, shared, share_edit, owner } = spend
+    const fetchExpenses = async (id: number) => {
         const { error, data } = await supabase.from('card_current_expenses').select('id,created_at,value,label,user_name').eq('card_id', id)
         if (data !== null) {
             return setExpenses(data)
@@ -66,13 +67,13 @@ export default function SpendCard({ spend }: { spend: Spend }) {
         <Card decoration='top' decorationColor={color as ProgressBarColor} className='rounded-md drop-shadow-md space-y-2 p-4 h-fit w-full'>
             <Flex className='w-full space-x-2'>
                 <Metric color={color as ProgressBarColor}>{title}</Metric>
-                    <Flex className='self-start w-fit space-x-1'>
-                        {shared?<div className='flex space-x-1'><Badge icon={Users} color={color as ProgressBarColor}>Shared</Badge></div>:null}
-                        {owner?<Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e) => {
-                            e.preventDefault()
-                            setToogle(prev => { return !prev })
-                        }}></Button>:null}
-                    </Flex>
+                <Flex className='self-start w-fit space-x-1'>
+                    {shared ? <div className='flex space-x-1'><Badge icon={Users} color={color as ProgressBarColor}>Shared</Badge></div> : null}
+                    {owner ? <Button variant='light' color={color as ProgressBarColor} icon={Settings} onClick={(e) => {
+                        e.preventDefault()
+                        setToogle(prev => { return !prev })
+                    }}></Button> : null}
+                </Flex>
             </Flex>
             <div>
                 <Flex>
@@ -103,7 +104,7 @@ export default function SpendCard({ spend }: { spend: Spend }) {
                 <MaxLimit color={color} placeholderText={'Set new monthly spending limits'} id={id} />
                 <EditTitle color={color} id={id} />
                 <div className="flex space-x-1 items-center justify-end">
-                    <ResetCard id={id}/>
+                    <ResetCard id={id} />
                     <DeleteCard id={id} />
                 </div>
             </div> : null}
@@ -128,23 +129,22 @@ export default function SpendCard({ spend }: { spend: Spend }) {
                         </TableHead>
                         <TableBody className='text-xs md:text-sm xl:text-base'>
                             {expenses?.map((el) => {
-                                const user = (el.user_name !== null?el.user_name:'User')
-                                return (<TableRow key={el.created_at}>
+                                const user = (el.user_name !== null ? el.user_name : 'User')
+                                return (<TableRow className='max-w-full' key={el.created_at}>
                                     <TableCell className='text-center p-1 md:p-2'>{dayjs(el.created_at).format('DD/MM HH:mm')}</TableCell>
                                     <TableCell className='text-center p-1 md:p-2'>
-                                        <Text>{el.label}</Text>
+                                        {el.label}
                                     </TableCell>
                                     <TableCell className='text-center p-1 md:p-2'>
                                         <Text color={color as ProgressBarColor}>{el.value}</Text>
                                     </TableCell>
-                                    <TableCell className='text-center p-1 md:p-2'>
-                                        <Text className='flex items-center justify-center space-x-1'><p>{user}</p> 
-                                        {/* {(email === el.creator) ?
+                                    <TableCell className='text-center p-1 md:p-2 flex items-center justify-center space-x-1'>
+                                        <span>{user}</span>
+                                        {(user_name === el.user_name) ?
                                             <Trash size={14} className='stroke-rose-500 hover:stroke-rose-700 hover:cursor-pointer transition-colors duration-300' onClick={() => {
-                                                deleteExpense(el.id,title!)
+                                                deleteExpense(el.id)
                                             }} />
-                                            : null} */}
-                                            </Text>
+                                            : null}
                                     </TableCell>
                                 </TableRow>
                                 )

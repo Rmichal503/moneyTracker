@@ -3,30 +3,52 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import React, { useEffect, useState } from 'react'
 import { Database, Spend } from '../../types/supabase'
 import Navbar from '@/components/Navbar';
-import { Loader } from 'lucide-react';
+import { Loader, PenTool } from 'lucide-react';
 import DynamicGrid from '@/components/DynamicGrid';
+import { Button, Card, Text, TextInput } from '@tremor/react';
+import { useUserState } from '@/store/user';
 
 const supabase = createClientComponentClient<Database>()
 const fetchData = async () => {
-    // const { data, error } = await supabase.from('spends').select('id,title,maxValue,currentValue,color,shared_with,share_edit,user_id').order('created_at', { ascending: true })
-    // const { data, error } = await supabase.from('card').select('id,created_at,current_value,max_value,title,color,shared').order('created_at', { ascending: true })
-    const {data,error} = await supabase.rpc('get_cards').order('created_at', {ascending:true})
-    // const { data:dataShare, error:errorShare } = await supabase.from('profiles').select('*,card ( * )')
+    const { data, error } = await supabase.rpc('get_cards').order('created_at', { ascending: true })
     if (error) {
         console.error(error)
         return
     }
-    console.log(data);
-    // console.log(dataShare);
     return data
+}
+const fetchProfile = async ()=>{
+    const {data} = await supabase.rpc('get_user_info')
+    return data
+}
+
+const newUserName =async (user_name:string|undefined, setUserName:(user_name:string)=>void) => {
+    if(user_name === undefined){
+        return alert('Type your user name')
+    }
+    const {error} = await supabase.rpc('update_user_name',{p_user_name:user_name})
+    if (error) {
+        console.error(error)
+        return
+    }
+    setUserName(user_name)
+    // setTimeout(() => {
+    //     location.reload()
+    // }, 400)
 }
 
 export default function page() {
     const [spends, setSpends] = useState<Spend[]>()
     const [loading, setLoading] = useState(true)
+    const [updateUserName, setUpdateUserName] = useState<string>()
+    const {user_email,user_name,setUserName,setUserEmail} = useUserState()
     useEffect(() => {
         const fetchSpends = async () => {
             const spends = await fetchData()
+            const user = await fetchProfile()
+            console.log(user);
+            setUserName(user![0].db_user_name)
+            setUserEmail(user![0].db_user_email)
             setSpends(spends)
         }
         fetchSpends()
@@ -34,21 +56,30 @@ export default function page() {
     }, [])
     return (
         <>
-            <Navbar />
-            {((spends === undefined) && (loading)) ? <Loader className='animate-spin my-auto' size={200} /> : (
-                    <div className='w-full h-fit flex md:space-y-0'>
-                        {/* grid grid-cols-1 grid-rows-1 md:grid-cols-2 xl:grid-cols-3 place-content-center md:place-content-evenly */}
-                        {spends !== undefined ? (
-                        // <>
-                        //     {spends.map((el,i) => {
-                        //         console.log(i);
-                        //         return (<SpendCard owner={owner!} spend={el} key={el.id} />)
-                        //     })}
-                        // </>
-                        <DynamicGrid spends={spends}/>
-                        ) : null}
-                    </div>
-            )}
+            {user_name === null ? <Card className='m-auto'>
+                <Text>Set your user name</Text>
+                <div className='flex space-x-2'>
+                    <TextInput className='rounded-md' placeholder='User name' onChange={(e) => {
+                        e.preventDefault()
+                        setUpdateUserName(e.target.value)
+                    }} />
+                    <Button className='rounded-md' icon={PenTool} variant='secondary' onClick={(e) => {
+                        e.preventDefault()
+                        newUserName(updateUserName,setUserName)
+                    }}></Button>
+                </div>
+            </Card> :
+                <>
+                    <Navbar />
+                    {((spends === undefined) && (loading)) ? <Loader className='animate-spin my-auto' size={200} /> : (
+                        <div className='w-full h-fit flex md:space-y-0'>
+                            {spends !== undefined ? (
+                                <DynamicGrid spends={spends} />
+                            ) : null}
+                        </div>
+                    )}
+                </>
+            }
         </>
     )
 }

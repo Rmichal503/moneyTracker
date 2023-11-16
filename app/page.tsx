@@ -15,7 +15,7 @@ export default async function Index() {
     data: { user }
   } = await supabase.auth.getUser()
   return (
-    <div className="w-full flex flex-col md:justify-center  md:space-x-8 items-center m-auto">
+    <div className="w-full flex flex-col md:justify-center md:space-x-8 items-center m-auto">
       <>
         {user ? (
           <nav className="absolute w-full flex justify-center border-b border-b-tremor-background-subtle dark:border-b-dark-tremor-background-subtle top-0">

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import AddNewList from './AddNewList'
 import LinkButton from './LinkButton'
 import LogoutButton from './LogoutButton'
+import Profile from './Profile'
 
 export default function Navbar() {
   const [url, setUrl] = useState<string>()
@@ -23,7 +24,8 @@ export default function Navbar() {
         </div>
         {url === '/spends'?<AddNewList />:null}
         {/* {url === '/analysis'?<LinkButton text='Check yours expenses' href='/spends'/>:<LinkButton text='Expenses analysis' href='/analysis'/>} */}
-        <LogoutButton />
+        <Profile/>
+        {/* <LogoutButton /> */}
       </div>
       <Divider className='mt-2 mb-0' />
     </div>
