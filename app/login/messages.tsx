@@ -9,12 +9,12 @@ export default function Messages() {
   return (
     <>
       {error && (
-        <p className="mt-4 p-4 bg-neutral-900 text-red-500 text-center flex-shrink-0">
+        <p className="mt-4 p-4 bg-tremor-background dark:bg-dark-tremor-background border border-tremor-border dark:border-dark-tremor-border rounded-lg text-tremor-content dark:text-dark-tremor-content text-center flex-shrink-0">
           {error}
         </p>
       )}
       {message && (
-        <p className="mt-4 p-4 bg-neutral-900 text-red-500 text-center flex-shrink-0">
+        <p className="mt-4 p-4 bg-tremor-background dark:bg-dark-tremor-background border border-tremor-border dark:border-dark-tremor-border rounded-lg text-tremor-content dark:text-dark-tremor-content text-center flex-shrink-0">
           {message}
         </p>
       )}

@@ -32,9 +32,6 @@ const newUserName =async (user_name:string|undefined, setUserName:(user_name:str
         return
     }
     setUserName(user_name)
-    // setTimeout(() => {
-    //     location.reload()
-    // }, 400)
 }
 
 export default function page() {
@@ -56,7 +53,7 @@ export default function page() {
     }, [])
     return (
         <>
-            {user_name === null ? <Card className='m-auto'>
+            {user_name === null ? <Card className='m-auto w-full md:w-2/3 lg:w-1/2 xl:w-1/3 lg:text-xl xl:text-2xl'>
                 <Text>Set your user name</Text>
                 <div className='flex space-x-2'>
                     <TextInput className='rounded-md' placeholder='User name' onChange={(e) => {
