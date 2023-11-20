@@ -41,7 +41,7 @@ export default function page() {
     const [spends, setSpends] = useState<Spend[]>()
     const [loading, setLoading] = useState(true)
     const [updateUserName, setUpdateUserName] = useState<string>()
-    const {user_email,user_name,setUserName,setUserEmail} = useUserState()
+    const {user_name,setUserName,setUserEmail} = useUserState()
     useEffect(() => {
         const fetchSpends = async () => {
             const spends = await fetchData()

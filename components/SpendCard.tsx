@@ -53,7 +53,7 @@ export default function SpendCard({ spend }: { spend: Spend }) {
     const [toogle, setToogle] = useState(false)
     const [expenses, setExpenses] = useState<Expenses[]>()
     const [toogleExpenses, setToogleExpenses] = useState(false)
-    const { user_name, user_email } = useUserState()
+    const { user_name} = useUserState()
     const { id, max_value, current_value, title, color, shared, share_edit, owner } = spend
     const fetchExpenses = async (id: number) => {
         const { error, data } = await supabase.from('card_current_expenses').select('id,created_at,value,label,user_name').eq('card_id', id)
@@ -118,7 +118,7 @@ export default function SpendCard({ spend }: { spend: Spend }) {
             </div>
             {(toogleExpenses) ?
                 (expenses !== undefined) ?
-                    (<Table>
+                    (<Table className='max-w-full'>
                         <TableHead>
                             <TableRow>
                                 <TableHeaderCell className='text-center'>Date</TableHeaderCell>
