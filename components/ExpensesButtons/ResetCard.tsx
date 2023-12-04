@@ -7,7 +7,7 @@ import React from 'react'
 const supabase = createClientComponentClient<Database>()
 
 const resetList = async (id: number) => {
-    const { error } = await supabase.from('card_current_expenses').delete().eq('card_id',id)
+    const { error } = await supabase.rpc('reset_expenses',{p_id:id})
     if (error) {
         console.error(error)
         return

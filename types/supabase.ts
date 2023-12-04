@@ -192,6 +192,12 @@ export interface Database {
           db_user_name: string
         }[]
       }
+      reset_expenses: {
+        Args: {
+          p_id: number
+        }
+        Returns: undefined
+      }
       update_current_value: {
         Args: {
           p_id: number
