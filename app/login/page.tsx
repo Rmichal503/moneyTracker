@@ -1,4 +1,5 @@
 import { Card, TextInput } from '@tremor/react'
+import { Suspense } from 'react'
 import Messages from './messages'
 
 export default function Login() {
@@ -42,7 +43,9 @@ export default function Login() {
             </button>
           </div>
         </form>
+        <Suspense>
           <Messages />
+        </Suspense>
       </Card>
     </div>
   )
