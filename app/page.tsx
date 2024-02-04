@@ -1,6 +1,7 @@
 
 import LinkButton from '@/components/LinkButton'
 import MockupSpendCard from '@/components/mockups/MockupSpendCard'
+import { Spend } from '@/types/supabase'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Metric, Text } from '@tremor/react'
 import { cookies } from 'next/headers'
@@ -46,9 +47,9 @@ export default async function Index() {
         <Text className='titleText text-xs md:text-sm'>a site where you can track all your expenses</Text>
       </div>
       <Login />
-      {/* <div className='w-full p-16'>
+      <div className='w-1/2 p-16 flex flex-col gap-10'>
         <MockupSpendCard/>
-      </div> */}
+      </div>
     </div>
   )
 }
