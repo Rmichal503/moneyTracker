@@ -10,18 +10,6 @@ import Login from './login/page'
 
 export const dynamic = 'force-dynamic'
 
-const mockData: Spend = {
-  color: "lime",
-  created_at: String(Date.now()),
-  current_value: 103,
-  id: 311,
-  max_value: 200,
-  shared: true,
-  title: "Cat",
-  share_edit: true,
-  owner: false
-}
-
 
 export default async function Index() {
   const supabase = createServerComponentClient({ cookies })
@@ -60,7 +48,7 @@ export default async function Index() {
       </div>
       <Login />
       <div className='w-1/2 p-16 flex flex-col gap-10'>
-        <MockupSpendCard mockData={mockData} />
+        <MockupSpendCard/>
       </div>
     </div>
   )
