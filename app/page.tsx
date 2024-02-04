@@ -1,6 +1,7 @@
 
 import LinkButton from '@/components/LinkButton'
 import MockupSpendCard from '@/components/mockups/MockupSpendCard'
+import { Spend } from '@/types/supabase'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Metric, Text } from '@tremor/react'
 import { cookies } from 'next/headers'
@@ -8,6 +9,18 @@ import LogoutButton from '../components/LogoutButton'
 import Login from './login/page'
 
 export const dynamic = 'force-dynamic'
+
+const mockData: Spend = {
+  color: "lime",
+  created_at: String(Date.now()),
+  current_value: 103,
+  id: 311,
+  max_value: 200,
+  shared: true,
+  title: "Cat",
+  share_edit: true,
+  owner: false
+}
 
 
 export default async function Index() {
@@ -46,9 +59,9 @@ export default async function Index() {
         <Text className='titleText text-xs md:text-sm'>a site where you can track all your expenses</Text>
       </div>
       <Login />
-      {/* <div className='w-full p-16'>
-        <MockupSpendCard/>
-      </div> */}
+      <div className='w-1/2 p-16 flex flex-col gap-10'>
+        <MockupSpendCard mockData={mockData} />
+      </div>
     </div>
   )
 }
