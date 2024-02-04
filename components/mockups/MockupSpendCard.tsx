@@ -56,7 +56,7 @@ const ToogleSpendCardOption = ({ toogle, owner, color }: ToogleOptionsProps) => 
 const ToogleSpendCardExpenses = ({ toogle, expenses, color }: ToogleExpensesProps) => {
     if (toogle) {
         if (expenses !== undefined) {
-            if(expenses.length !== 0){
+            if (expenses.length !== 0) {
                 return (
                     <Table className='max-w-full'>
                         <TableHead>
@@ -104,31 +104,31 @@ const ToogleSpendCardExpenses = ({ toogle, expenses, color }: ToogleExpensesProp
 
 const AddExpense = ({ owner, shareEdit, color }: AddExpenseProps) => {
     const [expense, setExpense] = useState<number>(0)
-    const [label,setLabel]=useState<string>('label')
-    const setExpenses = useMockupCardState((state)=>state.setExpenses)
-    const expensesId = useMockupCardState((state)=>state.expensesId)
-    const setExpensesId = useMockupCardState((state)=>state.setExpensesId)
-    const setCurrentValue = useMockupCardState((state)=>state.setCurrentValue)
+    const [label, setLabel] = useState<string>('label')
+    const setExpenses = useMockupCardState((state) => state.setExpenses)
+    const expensesId = useMockupCardState((state) => state.expensesId)
+    const setExpensesId = useMockupCardState((state) => state.setExpensesId)
+    const setCurrentValue = useMockupCardState((state) => state.setCurrentValue)
     if (owner || shareEdit) {
         return (
             <div className='flex space-x-2 items-center'>
                 <div className="flex flex-col space-y-1 w-full">
-                    <TextInput required className='rounded-md' placeholder='Expense label' onChange={(e)=>{
+                    <TextInput required className='rounded-md' placeholder='Expense label' onChange={(e) => {
                         e.preventDefault()
                         setLabel(e.target.value)
                     }} />
-                    <NumberInput className='rounded-md' placeholder='Add expense' enableStepper={false} onValueChange={(value)=>{
+                    <NumberInput className='rounded-md' placeholder='Add expense' enableStepper={false} onValueChange={(value) => {
                         setExpense(value)
-                    }}/>
+                    }} />
                 </div>
-                <Button color={color as ProgressBarColor} className='rounded-md aspect-square' icon={Coins} variant='secondary' onClick={(e)=>{
+                <Button color={color as ProgressBarColor} className='rounded-md aspect-square' icon={Coins} variant='secondary' onClick={(e) => {
                     e.preventDefault()
                     setExpenses({
-                        user_name:'user',
-                        label:label,
-                        value:expense,
+                        user_name: 'user',
+                        label: label,
+                        value: expense,
                         created_at: Date.now(),
-                        id:expensesId
+                        id: expensesId
                     })
                     setCurrentValue(expense)
                     setExpensesId()
@@ -145,11 +145,11 @@ export default function MockupSpendCard() {
     const [share, setShare] = useState(false)
     const [shareEdit, setShareEdit] = useState(false)
     const [owner, setOwner] = useState(false)
-    const max_value = useMockupCardState((state)=>state.max_value);
-    const current_value = useMockupCardState((state)=>state.current_value);
-    const title = useMockupCardState((state)=>state.title);
-    const color = useMockupCardState((state)=>state.color);
-    const expenses = useMockupCardState((state)=>state.expenses)
+    const max_value = useMockupCardState((state) => state.max_value);
+    const current_value = useMockupCardState((state) => state.current_value);
+    const title = useMockupCardState((state) => state.title);
+    const color = useMockupCardState((state) => state.color);
+    const expenses = useMockupCardState((state) => state.expenses)
     const handleSwitchShare = (value: boolean) => {
         setShare(value);
     };
@@ -176,18 +176,22 @@ export default function MockupSpendCard() {
         }
         return undefined
     }
+    const cardClass = `rounded-md drop-shadow-md space-y-2 p-4 h-fit w-full border-${color}-300 ring-${color}-300`
     return (
-        <>  <div className='flex gap-2'>
-            <Switch id='Owner' name='Owner' checked={owner} onChange={handleSwitchOwner} />
-            <Text color={owner ? 'blue' : undefined}>You Own this Spend Card?</Text>
-        </div>
-            <div className='flex gap-2'>
-                <Switch id='Share' name='Share' checked={share} onChange={handleSwitchShare} />
-                <Text color={share ? 'blue' : undefined}>You share with someone?</Text>
-            </div>
-            <div className='flex gap-2'>
-                <Switch id='ShareEdit' name='ShareEdit' checked={shareEdit} onChange={handleSwitchShareEdit} />
-                <Text color={shareEdit ? 'blue' : undefined}>Someone can also edit this Card?</Text>
+        <div className='sm:max-w-md w-full px-2'>
+            <div className='flex flex-col gap-5 py-5 px-2'>
+                <div className='flex gap-2'>
+                    <Switch id='Owner' name='Owner' checked={owner} onChange={handleSwitchOwner} />
+                    <Text color={owner ? color as ProgressBarColor : undefined}>You Own this Spend Card?</Text>
+                </div>
+                <div className='flex gap-2'>
+                    <Switch id='Share' name='Share' checked={share} onChange={handleSwitchShare} />
+                    <Text color={share ? color as ProgressBarColor : undefined}>You share with someone?</Text>
+                </div>
+                <div className='flex gap-2'>
+                    <Switch id='ShareEdit' name='ShareEdit' checked={shareEdit} onChange={handleSwitchShareEdit} />
+                    <Text color={shareEdit ? color as ProgressBarColor : undefined}>Someone can also edit this Card?</Text>
+                </div>
             </div>
             <Card decoration='top' decorationColor={color as ProgressBarColor} className='rounded-md drop-shadow-md space-y-2 p-4 h-fit w-full'>
                 <Flex className='w-full space-x-2'>
@@ -221,6 +225,6 @@ export default function MockupSpendCard() {
                 </div>
                 <ToogleSpendCardExpenses toogle={toogleExpenses} expenses={expenses} color={color} />
             </Card>
-        </>
+        </div>
     )
 }
