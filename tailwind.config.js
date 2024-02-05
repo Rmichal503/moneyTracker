@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */ 
+/** @type {import('tailwindcss').Config} */
 
 module.exports = {
   content: [
@@ -15,14 +15,14 @@ module.exports = {
         tremor: {
           brand: {
             faint: "#a5daf3", // blue-50
-            muted: "#e1b7cb", // blue-200 
-            subtle: "#c36f98", // blue-400
+            muted: "#a5daf3", // blue-200
+            subtle: "#4bb5e7", // blue-400
             DEFAULT: "#10587a", // blue-500
-            emphasis: "#6c2d4b", // blue-700
+            emphasis: "#1882b4", // blue-700
             inverted: "#ffffff", // white
           },
           background: {
-            muted: "#d2edf9", // gray-50 
+            muted: "#d2edf9", // gray-50
             subtle: "#e7daf1", // gray-100
             DEFAULT: "#e9f6fc", // white
             emphasis: "#512970", // gray-700
@@ -44,9 +44,9 @@ module.exports = {
         // dark mode
         "dark-tremor": {
           brand: {
-            faint: "#170309", // custom
-            muted: "#f3a5be", // blue-950
-            subtle: "#e21d5c", // blue-800
+            faint: "#871237", // custom
+            muted: "#e21d5c", // blue-950
+            subtle: "#871237", // blue-800
             DEFAULT: "#5a0c25", // blue-500
             emphasis: "#2d0612", // blue-400
             inverted: "#e8f6fc", // gray-950
@@ -75,12 +75,16 @@ module.exports = {
       boxShadow: {
         // light
         "tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        "tremor-card": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-        "tremor-dropdown": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+        "tremor-card":
+          "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+        "tremor-dropdown":
+          "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
         // dark
         "dark-tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        "dark-tremor-card": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-        "dark-tremor-dropdown": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+        "dark-tremor-card":
+          "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+        "dark-tremor-dropdown":
+          "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
       },
       borderRadius: {
         "tremor-small": "0.375rem",
@@ -93,9 +97,12 @@ module.exports = {
         "tremor-title": ["1.125rem", { lineHeight: "1.75rem" }],
         "tremor-metric": ["1.875rem", { lineHeight: "2.25rem" }],
       },
-      screens:{
-        'xs': '400px'
-      }
+      screens: {
+        xs: "400px",
+      },
+      dropShadow: {
+        darkSelectColor: "0 4px 3px rgba(232,246,252, 0.1)",
+      },
     },
   },
   safelist: [

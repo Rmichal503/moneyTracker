@@ -26,6 +26,7 @@ interface MockupCardActions {
     setCurrentValue: (current_value: number) => void;
     setMaxValue: (max_value: number) => void;
     setTitle: (title: string) => void;
+    setColor:(color:string)=>void;
     setExpensesId: ()=> void;
     setExpenses: ({ user_name, created_at, label, value, id }: Expenses) => void;
     reset: ()=>void;
@@ -52,6 +53,9 @@ export const useMockupCardState = create<MockupCardState & MockupCardActions>((s
     },
     setExpensesId:()=>{
         set((state)=>({expensesId:state.expensesId + 1}))
+    },
+    setColor:(color)=>{
+        set(()=>({color:color}))
     },
     setExpenses: (expense) => {
         set((state) => ({ expenses: [...state.expenses, expense] }))

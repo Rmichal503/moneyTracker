@@ -11,6 +11,7 @@ import MockupEditTitle from './Buttons/MockupEditTitle'
 import MockupResetCard from './Buttons/MockupResetCard'
 import MockupDeleteCard from './Buttons/MockupDeleteCard'
 import { useMockupCardState } from '@/store/user'
+import MockupColorChange from './Buttons/MockupColorChange'
 
 interface ToogleOptionsProps {
     toogle: boolean;
@@ -176,21 +177,21 @@ export default function MockupSpendCard() {
         }
         return undefined
     }
-    const cardClass = `rounded-md drop-shadow-md space-y-2 p-4 h-fit w-full border-${color}-300 ring-${color}-300`
     return (
         <div className='sm:max-w-md w-full px-2'>
+            <MockupColorChange/>
             <div className='flex flex-col gap-5 py-5 px-2'>
                 <div className='flex gap-2'>
                     <Switch id='Owner' name='Owner' checked={owner} onChange={handleSwitchOwner} />
-                    <Text color={owner ? color as ProgressBarColor : undefined}>You Own this Spend Card?</Text>
+                    <Text className='md:text-lg' color={owner ? color as ProgressBarColor : undefined}>You Own this Spend Card?</Text>
                 </div>
                 <div className='flex gap-2'>
                     <Switch id='Share' name='Share' checked={share} onChange={handleSwitchShare} />
-                    <Text color={share ? color as ProgressBarColor : undefined}>You share with someone?</Text>
+                    <Text className='md:text-lg' color={share ? color as ProgressBarColor : undefined}>You share with someone?</Text>
                 </div>
                 <div className='flex gap-2'>
                     <Switch id='ShareEdit' name='ShareEdit' checked={shareEdit} onChange={handleSwitchShareEdit} />
-                    <Text color={shareEdit ? color as ProgressBarColor : undefined}>Someone can also edit this Card?</Text>
+                    <Text className='md:text-lg' color={shareEdit ? color as ProgressBarColor : undefined}>Someone can also edit this Card?</Text>
                 </div>
             </div>
             <Card decoration='top' decorationColor={color as ProgressBarColor} className='rounded-md drop-shadow-md space-y-2 p-4 h-fit w-full'>
